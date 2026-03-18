@@ -1,0 +1,2186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brooks Brothers — TNA Command Centre</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0e0e0f;
+  --ink2: #181820;
+  --ink3: #21212e;
+  --sand: #e8dfd0;
+  --sand2: #f2ece2;
+  --gold: #c8a96e;
+  --gold2: #e2c98a;
+  --gold3: rgba(200,169,110,0.15);
+  --rust: #c0402a;
+  --rust2: #e05535;
+  --amber: #d97706;
+  --teal: #0d9488;
+  --mist: rgba(232,223,208,0.55);
+  --mist2: rgba(232,223,208,0.15);
+  --mist3: rgba(232,223,208,0.07);
+  --border: rgba(200,169,110,0.2);
+  --border2: rgba(232,223,208,0.1);
+  --red-bg: rgba(192,64,42,0.12);
+  --amber-bg: rgba(217,119,6,0.12);
+  --teal-bg: rgba(13,148,136,0.12);
+  --font-display: 'Cormorant Garamond', serif;
+  --font-mono: 'DM Mono', monospace;
+  --font-body: 'Outfit', sans-serif;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--ink);
+  color: var(--sand);
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* grain overlay */
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:9999; opacity:0.4;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  position: sticky; top:0; z-index:200;
+  background: rgba(14,14,15,0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+}
+.topbar-inner {
+  display: flex; align-items: center; gap:0;
+  height: 64px; max-width: 1920px; margin:0 auto;
+}
+.logo-zone {
+  display:flex; align-items:center; gap:14px;
+  padding-right: 28px;
+  border-right: 1px solid var(--border2);
+  min-width: fit-content;
+  flex-shrink: 0;
+}
+.rbl-wordmark {
+  display:flex; flex-direction:column; justify-content:center;
+}
+.rbl-main {
+  font-family: var(--font-display);
+  font-size:20px; font-weight:600;
+  letter-spacing:3px; text-transform:uppercase;
+  color: var(--sand2);
+  line-height:1;
+  white-space:nowrap;
+}
+.rbl-sub {
+  font-family: var(--font-mono);
+  font-size:8.5px; color: var(--gold);
+  letter-spacing:2.5px; text-transform:uppercase;
+  margin-top:5px;
+  opacity:0.75;
+}
+
+/* SEASON SELECTOR */
+.season-zone {
+  display:flex; align-items:center; gap:6px;
+  padding: 0 28px;
+  border-right: 1px solid var(--border2);
+}
+.season-label {
+  font-family:var(--font-mono); font-size:9px;
+  letter-spacing:2px; text-transform:uppercase;
+  color: rgba(232,223,208,0.4); margin-right:4px;
+}
+.season-chip {
+  padding: 5px 13px;
+  font-family: var(--font-mono); font-size:10px;
+  letter-spacing:1.5px; text-transform:uppercase;
+  border: 1px solid var(--border2);
+  color: rgba(232,223,208,0.5);
+  cursor:pointer; transition:all 0.2s;
+  border-radius:1px;
+  background: transparent;
+}
+.season-chip:hover { border-color: var(--gold); color:var(--gold); }
+.season-chip.active {
+  background: var(--gold); color: var(--ink);
+  border-color: var(--gold); font-weight:500;
+}
+
+/* NAV TABS */
+.nav-tabs {
+  display:flex; align-items:center; gap:0;
+  padding: 0 28px; flex:1;
+}
+.nav-tab {
+  padding: 0 18px; height:60px;
+  display:flex; align-items:center;
+  font-family:var(--font-mono); font-size:10px;
+  letter-spacing:2px; text-transform:uppercase;
+  color: rgba(232,223,208,0.4);
+  cursor:pointer; transition:all 0.2s;
+  border-bottom:2px solid transparent;
+  position:relative;
+}
+.nav-tab:hover { color: var(--sand); }
+.nav-tab.active { color:var(--gold); border-bottom-color:var(--gold); }
+
+/* HEADER ACTIONS */
+.header-right {
+  display:flex; align-items:center; gap:10px;
+  margin-left:auto;
+}
+.hbtn {
+  padding:7px 16px; font-family:var(--font-mono);
+  font-size:10px; letter-spacing:1.5px; text-transform:uppercase;
+  cursor:pointer; border:1px solid var(--border);
+  border-radius:1px; transition:all 0.2s;
+  background:transparent; color:var(--sand);
+}
+.hbtn:hover { border-color:var(--gold); color:var(--gold); }
+.hbtn-gold { background:var(--gold); color:var(--ink); border-color:var(--gold); font-weight:500; }
+.hbtn-gold:hover { background:var(--gold2); }
+.hbtn-alert { background:var(--red-bg); border-color:rgba(192,64,42,0.4); color:#f87171; }
+.hbtn-alert:hover { background:rgba(192,64,42,0.2); }
+
+/* ── ALERT STRIP ── */
+.alert-strip {
+  background: linear-gradient(90deg, var(--rust) 0%, #a83220 50%, var(--rust) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+  padding: 9px 32px;
+  display:flex; align-items:center; gap:10px;
+  font-family:var(--font-mono); font-size:10px; letter-spacing:1px;
+}
+@keyframes shimmer { 0%,100%{background-position:0% 0%} 50%{background-position:100% 0%} }
+.pulse-dot {
+  width:7px; height:7px; border-radius:50%;
+  background:#fca5a5; flex-shrink:0;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.4);opacity:0.6} }
+
+/* ── LAYOUT ── */
+.app-layout {
+  display:flex; max-width:1920px; margin:0 auto;
+  min-height: calc(100vh - 60px);
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width:230px; min-width:230px;
+  background: rgba(14,14,15,0.8);
+  border-right: 1px solid var(--border2);
+  padding: 20px 0;
+  position:sticky; top:60px;
+  height: calc(100vh - 60px);
+  overflow-y:auto;
+  flex-shrink:0;
+}
+.sb-section { margin-bottom:24px; }
+.sb-head {
+  font-family:var(--font-mono); font-size:8px;
+  letter-spacing:3px; text-transform:uppercase;
+  color: var(--gold); padding: 0 18px;
+  margin-bottom: 6px;
+  display:flex; align-items:center; gap:8px;
+}
+.sb-head::after {
+  content:''; flex:1; height:1px;
+  background: var(--border);
+}
+.sb-item {
+  display:flex; align-items:center; gap:10px;
+  padding: 9px 18px;
+  font-size:12px; color:rgba(232,223,208,0.5);
+  cursor:pointer; transition:all 0.18s;
+  border-left:2px solid transparent;
+  position:relative;
+}
+.sb-item:hover { color:var(--sand); background:var(--mist3); }
+.sb-item.active {
+  color:var(--gold); border-left-color:var(--gold);
+  background:var(--gold3);
+}
+.sb-item .sb-ico { font-size:11px; width:16px; text-align:center; flex-shrink:0; }
+.sb-badge {
+  margin-left:auto; background:var(--rust);
+  color:#fca5a5; font-size:8px; padding:2px 6px;
+  border-radius:20px; font-family:var(--font-mono); letter-spacing:0.5px;
+}
+.sb-badge-amber {
+  background:var(--amber-bg); color:#fbbf24;
+  border:1px solid rgba(217,119,6,0.3);
+  font-size:8px; padding:2px 6px; border-radius:20px;
+  font-family:var(--font-mono); margin-left:auto;
+}
+
+/* style sub-items */
+.sb-style-item {
+  padding: 6px 18px 6px 40px;
+  font-size:11px; color:rgba(232,223,208,0.35);
+  cursor:pointer; transition:all 0.15s;
+  font-family:var(--font-mono); letter-spacing:0.5px;
+  border-left:2px solid transparent;
+  display:flex; align-items:center; gap:6px;
+}
+.sb-style-item:hover { color:var(--sand); background:var(--mist3); }
+.sb-style-item.active { color:var(--gold2); border-left-color:var(--gold2); }
+.sb-style-dot {
+  width:5px; height:5px; border-radius:50%;
+  background:rgba(232,223,208,0.2); flex-shrink:0;
+}
+.sb-style-dot.red { background:var(--rust2); }
+.sb-style-dot.amber { background:var(--amber); }
+.sb-style-dot.green { background:var(--teal); }
+
+/* collapse toggle */
+.sb-cat-toggle { cursor:pointer; user-select:none; }
+.sb-cat-toggle .arrow { transition:transform 0.2s; display:inline-block; font-size:9px; margin-right:4px; }
+.sb-cat-toggle.open .arrow { transform:rotate(90deg); }
+
+/* ── MAIN ── */
+.main { flex:1; padding:28px 32px; overflow-x:auto; min-width:0; }
+
+/* ── KPI ROW ── */
+.kpi-row {
+  display:grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap:12px; margin-bottom:28px;
+}
+.kpi {
+  background: var(--ink2);
+  border: 1px solid var(--border2);
+  padding:18px 18px 14px;
+  position:relative; overflow:hidden;
+  transition:border-color 0.2s;
+}
+.kpi:hover { border-color:var(--border); }
+.kpi::after {
+  content:''; position:absolute;
+  bottom:0; left:0; right:0; height:2px;
+}
+.kpi.gold::after { background:linear-gradient(90deg,var(--gold),transparent); }
+.kpi.red::after { background:linear-gradient(90deg,var(--rust2),transparent); }
+.kpi.amber::after { background:linear-gradient(90deg,var(--amber),transparent); }
+.kpi.teal::after { background:linear-gradient(90deg,var(--teal),transparent); }
+.kpi-l { font-family:var(--font-mono); font-size:8px; letter-spacing:2px; text-transform:uppercase; color:rgba(232,223,208,0.4); margin-bottom:8px; }
+.kpi-v { font-family:var(--font-display); font-size:38px; font-weight:300; line-height:1; color:var(--sand2); }
+.kpi-s { font-size:10px; color:rgba(232,223,208,0.35); margin-top:5px; font-family:var(--font-mono); }
+
+/* ── FILTER BAR ── */
+.filter-row {
+  display:flex; align-items:center; gap:10px;
+  flex-wrap:wrap; margin-bottom:18px;
+}
+.fsel, .finp {
+  background: var(--ink2); border:1px solid var(--border2);
+  color:var(--sand); padding:8px 12px;
+  font-family:var(--font-mono); font-size:10px;
+  letter-spacing:1px; border-radius:1px; outline:none;
+  transition:border-color 0.2s; cursor:pointer;
+}
+.fsel:focus, .finp:focus { border-color:var(--gold); }
+.fsel option { background:var(--ink2); }
+.finp::placeholder { color:rgba(232,223,208,0.25); }
+
+/* ── TABLE ── */
+.tbl-wrap { border:1px solid var(--border2); overflow-x:auto; }
+table { width:100%; border-collapse:collapse; font-size:12px; }
+thead tr { background:var(--ink2); border-bottom:1px solid var(--border); }
+th {
+  padding:11px 13px; text-align:left;
+  font-family:var(--font-mono); font-size:8px;
+  letter-spacing:2px; text-transform:uppercase;
+  color:var(--gold); white-space:nowrap; font-weight:400;
+}
+tbody tr { border-bottom:1px solid var(--border2); transition:background 0.15s; }
+tbody tr:hover { background:var(--mist3); }
+tbody tr.crit { background:var(--red-bg); border-left:2px solid var(--rust2); }
+tbody tr.warn { background:var(--amber-bg); border-left:2px solid var(--amber); }
+tbody tr.good { border-left:2px solid var(--teal); }
+td { padding:10px 13px; color:var(--sand); vertical-align:middle; white-space:nowrap; }
+td.dim { color:rgba(232,223,208,0.45); font-family:var(--font-mono); font-size:10px; }
+
+/* style sub-rows */
+.style-sub { background:rgba(14,14,15,0.6) !important; }
+.style-sub td { padding:7px 13px 7px 36px; font-size:11px; color:rgba(232,223,208,0.4); }
+.style-sub td:first-child { font-family:var(--font-mono); font-size:10px; color:rgba(200,169,110,0.6); }
+
+/* expand btn */
+.xbtn {
+  background:transparent; border:none; cursor:pointer;
+  color:rgba(232,223,208,0.3); font-size:11px;
+  transition:all 0.2s; padding:2px 4px; border-radius:2px;
+  margin-right:4px;
+}
+.xbtn:hover { color:var(--gold); background:var(--gold3); }
+.xbtn.open { color:var(--gold); transform:rotate(90deg); }
+
+/* badges */
+.badge {
+  display:inline-block; padding:3px 9px; border-radius:1px;
+  font-size:8px; font-family:var(--font-mono);
+  letter-spacing:1px; text-transform:uppercase; font-weight:500;
+}
+.bg-gold { background:rgba(200,169,110,0.15); color:var(--gold); border:1px solid rgba(200,169,110,0.3); }
+.bg-red { background:var(--red-bg); color:#f87171; border:1px solid rgba(192,64,42,0.3); }
+.bg-amber { background:var(--amber-bg); color:#fbbf24; border:1px solid rgba(217,119,6,0.3); }
+.bg-teal { background:var(--teal-bg); color:#2dd4bf; border:1px solid rgba(13,148,136,0.3); }
+.bg-mist { background:var(--mist2); color:rgba(232,223,208,0.6); border:1px solid var(--border2); }
+.bg-blue { background:rgba(59,130,246,0.1); color:#93c5fd; border:1px solid rgba(59,130,246,0.25); }
+
+/* delay pill */
+.dpill {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:3px 9px; border-radius:20px;
+  font-family:var(--font-mono); font-size:10px;
+}
+.dpill.crit { background:var(--red-bg); color:#f87171; border:1px solid rgba(192,64,42,0.3); }
+.dpill.warn { background:var(--amber-bg); color:#fbbf24; border:1px solid rgba(217,119,6,0.3); }
+.dpill.ok { background:var(--teal-bg); color:#2dd4bf; border:1px solid rgba(13,148,136,0.3); }
+.dpill.early { background:rgba(139,92,246,0.1); color:#c4b5fd; border:1px solid rgba(139,92,246,0.25); }
+
+/* progress */
+.prog { width:80px; }
+.prog-bar { height:3px; background:rgba(232,223,208,0.08); border-radius:2px; overflow:hidden; }
+.prog-fill { height:100%; border-radius:2px; }
+.prog-lbl { font-size:9px; color:rgba(232,223,208,0.35); margin-top:3px; font-family:var(--font-mono); }
+
+/* remark btn */
+.rbtn {
+  background:transparent; border:1px solid var(--border2);
+  color:rgba(232,223,208,0.4); padding:4px 9px;
+  font-size:9px; cursor:pointer; border-radius:1px;
+  font-family:var(--font-mono); letter-spacing:1px; text-transform:uppercase;
+  transition:all 0.2s;
+}
+.rbtn:hover { border-color:var(--gold); color:var(--gold); }
+.rbtn.has { border-color:var(--amber); color:#fbbf24; background:var(--amber-bg); }
+
+/* ── VENDOR CARDS ── */
+.vendor-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:14px; margin-top:20px; }
+.vcard {
+  background:var(--ink2); border:1px solid var(--border2);
+  padding:22px; position:relative; overflow:hidden;
+  transition:border-color 0.2s, transform 0.2s;
+}
+.vcard:hover { border-color:var(--border); transform:translateY(-2px); }
+.vcard::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+.vcard-name { font-family:var(--font-display); font-size:18px; font-weight:400; color:var(--sand2); margin-bottom:2px; }
+.vcard-meta { font-family:var(--font-mono); font-size:9px; color:var(--gold); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:16px; }
+.vcard-stat { display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid var(--border2); font-size:11px; }
+.vcard-stat-l { color:rgba(232,223,208,0.45); }
+.vcard-stat-v { font-family:var(--font-mono); font-size:11px; color:var(--sand); }
+.vscore {
+  position:absolute; top:18px; right:18px;
+  width:42px; height:42px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-mono); font-size:14px; font-weight:500;
+  border:1.5px solid;
+}
+.vs-a { border-color:var(--teal); color:#2dd4bf; background:var(--teal-bg); }
+.vs-b { border-color:var(--gold); color:var(--gold); background:var(--gold3); }
+.vs-c { border-color:var(--amber); color:#fbbf24; background:var(--amber-bg); }
+.vs-d { border-color:var(--rust); color:#f87171; background:var(--red-bg); }
+
+/* ── COST TABLE ── */
+.cost-pos { color:#f87171; font-family:var(--font-mono); font-size:11px; }
+.cost-neg { color:#2dd4bf; font-family:var(--font-mono); font-size:11px; }
+.cost-neutral { color:rgba(232,223,208,0.5); font-family:var(--font-mono); font-size:11px; }
+
+/* ── PERT ── */
+.pert-wrap {
+  background:var(--ink2); border:1px solid var(--border2);
+  padding:28px; margin-top:20px; overflow-x:auto;
+}
+.pert-title { font-family:var(--font-display); font-size:22px; color:var(--gold); margin-bottom:6px; }
+.pert-sub { font-family:var(--font-mono); font-size:10px; color:rgba(232,223,208,0.35); letter-spacing:1.5px; margin-bottom:22px; }
+.pert-node-c { fill:rgba(192,64,42,0.25); stroke:var(--rust2); stroke-width:1.5; }
+.pert-node-n { fill:rgba(24,24,32,0.95); stroke:var(--gold); stroke-width:1.2; }
+.pert-text { fill:var(--sand2); font-family:'DM Mono',monospace; font-size:8.5px; }
+.pert-sub-text { fill:var(--gold); font-family:'DM Mono',monospace; font-size:8px; }
+.pert-edge-c { stroke:var(--rust2); stroke-width:1.8; fill:none; marker-end:url(#arrow-c); }
+.pert-edge-n { stroke:rgba(200,169,110,0.4); stroke-width:1.2; fill:none; marker-end:url(#arrow-n); }
+.pert-dur { fill:rgba(200,169,110,0.6); font-family:'DM Mono',monospace; font-size:8px; }
+
+/* ── SOURCING ── */
+.dept-flow-wrap { overflow-x:auto; padding:4px 0 16px; }
+.dept-flow { display:flex; gap:0; min-width:1200px; }
+.dept-node {
+  min-width:135px; padding:16px 14px;
+  background:var(--ink2); border:1px solid var(--border2);
+  border-right:none; position:relative; text-align:center;
+  transition:background 0.2s;
+}
+.dept-node:last-child { border-right:1px solid var(--border2); }
+.dept-node:hover { background:var(--ink3); }
+.dept-node::after {
+  content:'→'; position:absolute;
+  right:-12px; top:50%; transform:translateY(-50%);
+  color:var(--gold); font-size:14px; z-index:1;
+}
+.dept-node:last-child::after { display:none; }
+.dept-node-t { font-family:var(--font-mono); font-size:8px; color:var(--gold); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:8px; }
+.dept-node-s { font-size:9px; color:rgba(232,223,208,0.4); line-height:1.8; text-align:left; }
+
+/* ── MODAL ── */
+.overlay { position:fixed; inset:0; background:rgba(0,0,0,0.75); backdrop-filter:blur(6px); z-index:900; display:none; align-items:center; justify-content:center; }
+.overlay.open { display:flex; }
+.modal {
+  background:var(--ink2); border:1px solid var(--border);
+  padding:clamp(16px, 3vw, 32px); width:min(640px, 94vw); max-height:90vh; overflow-y:auto;
+  position:relative; box-shadow:0 32px 80px rgba(0,0,0,0.8);
+  animation: modalIn 0.25s ease;
+}
+@keyframes modalIn { from{transform:translateY(16px);opacity:0} to{transform:translateY(0);opacity:1} }
+.modal-t {
+  font-family:var(--font-display); font-size:24px; font-weight:300;
+  color:var(--sand2); margin-bottom:6px;
+}
+.modal-sub { font-family:var(--font-mono); font-size:9px; color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin-bottom:22px; border-bottom:1px solid var(--border2); padding-bottom:14px; }
+.mclose { position:absolute; top:16px; right:16px; background:transparent; border:none; color:rgba(232,223,208,0.3); font-size:18px; cursor:pointer; transition:color 0.2s; }
+.mclose:hover { color:var(--sand); }
+.fg { margin-bottom:14px; }
+.fl { display:block; font-family:var(--font-mono); font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:5px; }
+.fi, .fta, .fse {
+  width:100%; background:rgba(14,14,15,0.8); border:1px solid var(--border2);
+  color:var(--sand); padding:9px 12px; font-family:var(--font-body); font-size:13px;
+  border-radius:1px; outline:none; transition:border-color 0.2s;
+}
+.fi:focus, .fta:focus, .fse:focus { border-color:var(--gold); }
+.fta { min-height:80px; resize:vertical; }
+
+.sync-badge { display:inline-flex; align-items:center; gap:5px; font-family:var(--font-mono); font-size:9px; letter-spacing:1.5px; text-transform:uppercase; padding:4px 10px; border-radius:20px; border:1px solid; cursor:default; transition:all 0.3s; }
+.badge-local   { color:#888780; border-color:#5F5E5A; background:rgba(95,94,90,0.1); }
+.badge-loading { color:#BA7517; border-color:#BA7517; background:rgba(186,117,23,0.1); }
+.badge-live    { color:#0F6E56; border-color:#1D9E75; background:rgba(29,158,117,0.1); }
+.badge-error   { color:#993C1D; border-color:#D85A30; background:rgba(216,90,48,0.1); }
+
+.fgrid2 { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px; }
+.mactions { display:flex; gap:10px; justify-content:flex-end; margin-top:20px; border-top:1px solid var(--border2); padding-top:18px; }
+
+/* email log */
+.elog { background:rgba(14,14,15,0.8); border:1px solid var(--border2); padding:14px; max-height:220px; overflow-y:auto; margin-top:12px; }
+.elog-entry { padding:8px 0; border-bottom:1px solid var(--border2); font-size:10px; font-family:var(--font-mono); color:rgba(232,223,208,0.4); line-height:1.6; }
+.elog-entry .hl { color:var(--gold); }
+
+/* image upload */
+.img-upload-btn {
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+}
+.img-placeholder {
+  display:flex; align-items:center; justify-content:center;
+  width:30px; height:30px; font-size:16px;
+  border:1px dashed var(--border2); border-radius:2px;
+  cursor:pointer; transition:all 0.2s; color:rgba(232,223,208,0.3);
+  background:rgba(200,169,110,0.04);
+}
+.img-placeholder:hover { border-color:var(--gold); color:var(--gold); background:rgba(200,169,110,0.08); }
+.thumb-img {
+  width:34px; height:34px; object-fit:cover;
+  border:1px solid var(--border2); border-radius:2px; cursor:pointer;
+  transition:all 0.2s;
+}
+.thumb-img:hover { border-color:var(--gold); transform:scale(1.1); }
+.img-modal-overlay {
+  position:fixed; inset:0; background:rgba(0,0,0,0.88);
+  backdrop-filter:blur(8px); z-index:9999;
+  display:none; align-items:center; justify-content:center;
+}
+.img-modal-overlay.open { display:flex; }
+.img-modal-inner {
+  position:relative; max-width:90vw; max-height:90vh;
+  display:flex; flex-direction:column; align-items:center; gap:14px;
+}
+.img-modal-inner img {
+  max-width:80vw; max-height:75vh; object-fit:contain;
+  border:1px solid var(--border2); border-radius:2px;
+  box-shadow:0 32px 80px rgba(0,0,0,0.9);
+}
+.img-modal-label {
+  font-family:var(--font-mono); font-size:11px; color:var(--gold);
+  letter-spacing:2px; text-transform:uppercase;
+}
+.img-modal-actions { display:flex; gap:10px; }
+.img-modal-close {
+  position:absolute; top:-14px; right:-14px;
+  background:var(--ink2); border:1px solid var(--border2);
+  color:rgba(232,223,208,0.5); width:30px; height:30px;
+  border-radius:50%; cursor:pointer; font-size:16px;
+  display:flex; align-items:center; justify-content:center;
+  transition:all 0.2s;
+}
+.img-modal-close:hover { border-color:var(--gold); color:var(--gold); }
+
+/* float toast */
+.toast {
+  position:fixed; bottom:24px; right:24px; z-index:9998;
+  background:var(--ink2); border:1px solid var(--border);
+  padding:14px 20px; border-radius:2px;
+  font-family:var(--font-mono); font-size:11px; color:var(--sand);
+  box-shadow:0 8px 40px rgba(0,0,0,0.6);
+  animation:toastIn 0.3s ease; max-width:360px;
+  border-left:3px solid var(--gold);
+}
+.toast.err { border-left-color:var(--rust2); }
+@keyframes toastIn { from{transform:translateX(20px);opacity:0} to{transform:translateX(0);opacity:1} }
+
+/* scrollbar */
+::-webkit-scrollbar { width:4px; height:4px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:rgba(200,169,110,0.2); border-radius:2px; }
+::-webkit-scrollbar-thumb:hover { background:rgba(200,169,110,0.4); }
+
+/* ── section header ── */
+.sh { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:20px; }
+.sh-t { font-family:var(--font-display); font-size:28px; font-weight:300; color:var(--sand2); }
+.sh-s { font-family:var(--font-mono); font-size:9px; color:rgba(232,223,208,0.35); letter-spacing:2px; text-transform:uppercase; margin-top:3px; }
+
+.hidden { display:none !important; }
+@media(max-width:900px){ .sidebar{display:none} .main{padding:16px} .kpi-row{grid-template-columns:repeat(2,1fr)} }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="logo-zone">
+      <div class="rbl-wordmark">
+        <span class="rbl-main">Reliance Brands Limited</span>
+        <span class="rbl-sub">Buying &amp; Merchandising · SS 2026</span>
+      </div>
+    </div>
+
+    <div class="season-zone" style="display:none">
+      <span class="season-label">Season</span>
+      <div id="seasonChips"></div>
+    </div>
+
+    <div class="nav-tabs">
+      <div class="nav-tab active" id="nt-tna" onclick="showTab('tna')">TNA Calendar</div>
+      <div class="nav-tab" id="nt-vendor" onclick="showTab('vendor')">Vendors</div>
+      <div class="nav-tab" id="nt-cost" onclick="showTab('cost')">Cost Analysis</div>
+      <div class="nav-tab" id="nt-pert" onclick="showTab('pert')">PERT Chart</div>
+      <div class="nav-tab" id="nt-sourcing" onclick="showTab('sourcing')">Sourcing Dept</div>
+    </div>
+
+    <div class="header-right">
+      <button class="hbtn hbtn-alert" onclick="openEmailModal()">⚠ Alerts</button>
+      <button class="hbtn" onclick="exportCSV()">↓ Export</button>
+      <span id="syncBadge" class="sync-badge badge-local">⚡ Local mode</span>
+      <button class="hbtn" onclick="refreshFromSheets()" title="Reload from Google Sheets" style="font-size:11px;padding:6px 12px;">↻ Refresh</button>
+      <button class="hbtn hbtn-gold" onclick="openAddModal()">+ Add Style</button>
+    </div>
+  </div>
+</div>
+
+<!-- ALERT STRIP -->
+<div class="alert-strip" id="alertStrip">
+  <div class="pulse-dot"></div>
+  <span id="alertMsg">Initialising alert engine...</span>
+</div>
+
+<!-- LAYOUT -->
+<div class="app-layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="mainSidebar">
+    <div class="sb-section">
+      <div class="sb-head">Categories</div>
+      <div class="sb-item active" id="sb-ALL" onclick="sidebarCat('ALL', this)">
+        <span class="sb-ico">◈</span> All Categories
+      </div>
+      <!-- dynamic category items injected here -->
+      <div id="catSidebarItems"></div>
+    </div>
+    <div class="sb-section">
+      <div class="sb-head">Quick Filters</div>
+      <div class="sb-item" onclick="sidebarStatus('High Risk', this)"><span class="sb-ico">🔴</span> High Risk <span class="sb-badge" id="countCrit">0</span></div>
+      <div class="sb-item" onclick="sidebarStatus('Minor Delay', this)"><span class="sb-ico">🟠</span> Minor Delay <span class="sb-badge-amber" id="countWarn">0</span></div>
+      <div class="sb-item" onclick="sidebarStatus('On Track', this)"><span class="sb-ico">🟢</span> On Track</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- TNA VIEW -->
+    <div id="view-tna">
+      <div class="kpi-row" id="kpiRow"></div>
+
+      <div class="filter-row">
+        <select class="fsel" id="fCat" onchange="applyFilters()">
+          <option value="">All Categories</option>
+          <option>DRESS SHIRT</option><option>SPORT SHIRT</option><option>KNITS</option>
+          <option>CHINOS</option><option>SHACKET</option><option>BAGS</option><option>FOOTWEAR</option>
+        </select>
+        <select class="fsel" id="fStyle" onchange="applyFilters()">
+          <option value="">All Styles</option>
+        </select>
+        <select class="fsel" id="fStatus" onchange="applyFilters()">
+          <option value="">All Status</option>
+          <option>High Risk</option><option>Minor Delay</option>
+          <option>On Track</option><option>Early</option>
+        </select>
+        <select class="fsel" id="fStage" onchange="applyFilters()">
+          <option value="">All Stages</option>
+          <option>Design Approval</option><option>Fabric Sourcing</option>
+          <option>Proto Sample</option><option>Fit Sample</option>
+          <option>Salesman Sample</option><option>PP Sample</option>
+          <option>Bulk Production</option><option>QC Inspection</option><option>Shipment</option>
+        </select>
+        <select class="fsel" id="fVendor" onchange="applyFilters()">
+          <option value="">All Vendors</option>
+          <option>Maral Overseas</option><option>SRV Knits</option><option>Ranger Apparels</option>
+          <option>Denim Creation</option><option>R K Industries</option><option>Sparc Far East</option>
+        </select>
+        <input class="finp" type="text" placeholder="Search style / desc…" id="fSearch" oninput="applyFilters()" style="width:160px">
+      </div>
+
+      <div class="tbl-wrap">
+        <table><thead><tr>
+          <th></th><th>Style #</th><th>Category</th><th>Description</th>
+          <th>Vendor</th><th>Stage</th><th>Planned</th><th>Actual</th>
+          <th>Delay</th><th>Status</th><th>Progress</th>
+          <th>Qty</th><th>Delay Reason</th><th>Responsibility</th><th>Updated TNA</th><th>Remark</th><th>Image</th>
+        </tr></thead>
+        <tbody id="tnaBody"></tbody></table>
+      </div>
+
+      <!-- PERT inline -->
+      <div class="pert-wrap" style="margin-top:28px">
+        <div class="pert-title">PERT Network — Critical Path</div>
+        <div class="pert-sub">Program Evaluation & Review Technique · SS 2026</div>
+        <svg id="pertInline" width="1060" height="300" style="border-radius:2px"></svg>
+      </div>
+    </div>
+
+    <!-- VENDOR VIEW -->
+    <div id="view-vendor" class="hidden">
+      <div class="sh">
+        <div><div class="sh-t">Vendor Performance</div><div class="sh-s">Reliability · Lead Time · Cost Adherence · Quality</div></div>
+      </div>
+      <div class="vendor-grid" id="vendorGrid"></div>
+    </div>
+
+    <!-- COST VIEW -->
+    <div id="view-cost" class="hidden">
+      <div class="sh">
+        <div><div class="sh-t">Cost Analysis</div><div class="sh-s">Target FOB vs Actual FOB — All components (₹)</div></div>
+      </div>
+      <div class="tbl-wrap" style="margin-top:4px">
+        <table><thead><tr>
+          <th>Style</th><th>Cat</th><th>Description</th>
+          <th>Tgt Fabric</th><th>Act Fabric</th>
+          <th>Tgt CMT</th><th>Act CMT</th>
+          <th>Tgt Trims</th><th>Act Trims</th>
+          <th>Tgt FOB</th><th>Act FOB</th>
+          <th>Variance</th><th>Reason</th>
+        </tr></thead>
+        <tbody id="costBody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- PERT VIEW -->
+    <div id="view-pert" class="hidden">
+      <div class="sh">
+        <div><div class="sh-t">PERT Chart</div><div class="sh-s">Critical Path · Production to Retail Launch</div></div>
+      </div>
+      <div class="pert-wrap" style="margin-top:4px">
+        <svg id="pertFull" width="1060" height="400" style="border-radius:2px"></svg>
+        <div style="display:flex;gap:24px;margin-top:18px;flex-wrap:wrap">
+          <span style="font-family:var(--font-mono);font-size:10px;color:rgba(232,223,208,0.5);display:flex;align-items:center;gap:8px"><span style="width:14px;height:14px;border-radius:50%;background:rgba(192,64,42,0.3);border:1.5px solid var(--rust2);display:inline-block"></span> Critical Path</span>
+          <span style="font-family:var(--font-mono);font-size:10px;color:rgba(232,223,208,0.5);display:flex;align-items:center;gap:8px"><span style="width:14px;height:14px;border-radius:50%;background:rgba(24,24,32,0.9);border:1.2px solid var(--gold);display:inline-block"></span> Normal Path</span>
+          <span style="font-family:var(--font-mono);font-size:10px;color:rgba(232,223,208,0.5);display:flex;align-items:center;gap:8px"><span style="width:24px;height:2px;background:var(--rust2);display:inline-block"></span> Critical Edge</span>
+          <span style="font-family:var(--font-mono);font-size:10px;color:rgba(232,223,208,0.5);display:flex;align-items:center;gap:8px"><span style="width:24px;height:1px;background:rgba(200,169,110,0.4);display:inline-block"></span> Float Edge</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOURCING VIEW -->
+    <div id="view-sourcing" class="hidden">
+      <div class="sh">
+        <div><div class="sh-t">Sourcing Department</div><div class="sh-s">Brooks Brothers India · Luxury Manufacturing Workflow</div></div>
+      </div>
+      <div id="sourcingContent"></div>
+    </div>
+
+
+    <!-- QTY TAB -->
+    <div id="view-qty" class="hidden">
+      <div class="sh">
+        <div>
+          <div class="sh-t">Quantity Breakdown</div>
+          <div class="sh-s">SS26 · 95,000 Units · Category · Style · Vendor</div>
+        </div>
+      </div>
+      <div id="qtyContent"></div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /layout -->
+
+<!-- ─── REMARK MODAL ─── -->
+<div class="overlay" id="remarkModal">
+  <div class="modal">
+    <button class="mclose" onclick="closeModal('remarkModal')">✕</button>
+    <div class="modal-t">Remark & Gap Note</div>
+    <div class="modal-sub">Style: <span id="rmkStyleDisp" style="color:var(--sand2)"></span></div>
+    <input type="hidden" id="rmkId">
+    <div class="fg"><label class="fl">Gap / Issue Identified</label><textarea class="fta" id="rmkText" placeholder="Describe the gap, discrepancy or issue…"></textarea></div>
+    <div class="fgrid2">
+      <div class="fg"><label class="fl">Action Required</label><input class="fi" id="rmkAction" placeholder="Immediate action…"></div>
+      <div class="fg"><label class="fl">Responsible Person</label><input class="fi" id="rmkResp" placeholder="Name / dept…"></div>
+    </div>
+    <div class="fgrid2">
+      <div class="fg"><label class="fl">Target Resolution</label><input class="fi" type="date" id="rmkDate"></div>
+      <div class="fg"><label class="fl">Priority</label>
+        <select class="fse" id="rmkPri"><option>High</option><option>Medium</option><option>Low</option></select>
+      </div>
+    </div>
+    <div class="mactions">
+      <button class="hbtn" onclick="closeModal('remarkModal')">Cancel</button>
+      <button class="hbtn hbtn-gold" onclick="saveRemark()">Save Remark</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── EMAIL MODAL ─── -->
+<div class="overlay" id="emailModal">
+  <div class="modal">
+    <button class="mclose" onclick="closeModal('emailModal')">✕</button>
+    <div class="modal-t">Delay Alert Log</div>
+    <div class="modal-sub">Auto-alerts sent for delays ≥ 45 days</div>
+    <div class="elog" id="elogContainer"></div>
+    <div style="margin-top:20px">
+      <div class="fgrid2">
+        <div class="fg"><label class="fl">Send Manual Alert To</label><input class="fi" id="manEmail" placeholder="name@reliancebrandltd.com"></div>
+        <div class="fg"><label class="fl">Style Reference</label><input class="fi" id="manStyle" placeholder="e.g. NK-004"></div>
+      </div>
+      <div class="fg"><label class="fl">Message</label><textarea class="fta" id="manMsg" placeholder="Custom alert message…" style="min-height:60px"></textarea></div>
+    </div>
+    <div class="mactions">
+      <button class="hbtn" onclick="closeModal('emailModal')">Close</button>
+      <button class="hbtn" style="border-color:var(--rust);color:#f87171;background:var(--red-bg)" onclick="sendManualAlert()">Send Alert</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── ADD STYLE MODAL ─── -->
+<div class="overlay" id="addModal">
+  <div class="modal">
+    <button class="mclose" onclick="closeModal('addModal')">✕</button>
+    <div class="modal-t">Add New Style</div>
+    <div class="modal-sub">TNA Entry · <span id="addSeasonDisp"></span></div>
+    <div class="fgrid2">
+      <div class="fg"><label class="fl">Style #</label><input class="fi" id="nId" placeholder="e.g. NK-005"></div>
+      <div class="fg"><label class="fl">Qty <span style="color:var(--gold);font-size:9px;letter-spacing:1px">(UNITS)</span></label><input class="fi" id="nQty" type="number" min="0" placeholder="e.g. 500" style="font-family:var(--font-mono)"></div>
+      <div class="fg"><label class="fl">Category</label>
+        <select class="fse" id="nCat">
+          <option>DRESS SHIRT</option><option>SPORT SHIRT</option><option>KNITS</option>
+          <option>CHINOS</option><option>SHACKET</option><option>BAGS</option><option>FOOTWEAR</option>
+        </select>
+      </div>
+      <div class="fg" style="grid-column:1/-1"><label class="fl">Description</label><input class="fi" id="nDesc" placeholder="Style description…"></div>
+      <div class="fg"><label class="fl">Vendor</label>
+        <select class="fse" id="nVendor">
+          <option>Maral Overseas</option><option>SRV Knits</option><option>Ranger Apparels</option>
+          <option>Denim Creation</option><option>R K Industries</option><option>Sparc Far East</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Stage</label>
+        <select class="fse" id="nStage">
+          <option>Design Approval</option><option>Fabric Sourcing</option><option>Proto Sample</option>
+          <option>Fit Sample</option><option>Salesman Sample</option><option>PP Sample</option>
+          <option>Bulk Production</option><option>QC Inspection</option><option>Shipment</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Planned Date</label><input class="fi" type="date" id="nPlanned"></div>
+      <div class="fg"><label class="fl">Actual Date</label><input class="fi" type="date" id="nActual"></div>
+      <div class="fg"><label class="fl">Target FOB ₹</label><input class="fi" id="nTgtCost" placeholder="e.g. 2500"></div>
+      <div class="fg"><label class="fl">Actual FOB ₹</label><input class="fi" id="nActCost" placeholder="e.g. 2750"></div>
+      <div class="fg" style="grid-column:1/-1"><label class="fl">Delay Reason (if any)</label><input class="fi" id="nReason" placeholder="Reason for any delay…"></div>
+      <div class="fg"><label class="fl">Responsible Email</label><input class="fi" id="nResp" placeholder="name@rbl.com"></div>
+      <div class="fg"><label class="fl">Style Variants (comma separated)</label><input class="fi" id="nStyles" placeholder="e.g. NK-005-WHT-M, NK-005-NVY-L"></div>
+    </div>
+    <div class="mactions">
+      <button class="hbtn" onclick="closeModal('addModal')">Cancel</button>
+      <button class="hbtn hbtn-gold" onclick="addStyle()">Add to TNA</button>
+    </div>
+  </div>
+</div>
+
+<div id="toastEl" class="toast hidden"></div>
+
+<!-- IMAGE MODAL -->
+<div class="img-modal-overlay" id="imgModal" onclick="closeImageModal(event)">
+  <div class="img-modal-inner">
+    <button class="img-modal-close" onclick="document.getElementById('imgModal').classList.remove('open')">✕</button>
+    <div class="img-modal-label" id="imgModalLabel"></div>
+    <img id="imgModalImg" src="" alt="Style Image">
+    <div class="img-modal-actions">
+      <button class="hbtn hbtn-gold" onclick="document.getElementById('imgModalFileInput').click()">↑ Replace</button>
+      <button class="hbtn" style="border-color:var(--rust2);color:var(--rust2)" onclick="removeImage()">✕ Remove</button>
+    </div>
+    <input type="file" id="imgModalFileInput" accept="image/*" style="display:none" onchange="handleModalImageReplace(this)">
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════
+// SEASONS
+// ════════════════════════════════════════════
+const SEASONS = ['SS26'];
+// ════════════════════════════════════════════
+// GOOGLE SHEETS LIVE SYNC
+// ════════════════════════════════════════════
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbw4mnNJ3HR6wDkQ4NpvANCrQC5jMPO3yWWtVpC9ck4ERb-IuornPKOi2cs3TcW1TGHOCg/exec';
+
+async function gasRead() {
+  try {
+    const res = await fetch(GAS_URL + '?action=read');
+    const rows = await res.json();
+    return rows.map(r => ({
+      id: r.id, season: r.season || 'SS26',
+      cat: r.cat, desc: r.desc, vendor: r.vendor,
+      stage: r.stage, planned: r.planned, actual: r.actual,
+      progress: Number(r.progress) || 0,
+      resp: r.resp, delayReason: r.delayReason,
+      styles: r.styles ? r.styles.split(',').map(s=>s.trim()) : [r.id+'-TBD'],
+      qty: Number(r.qty) || 0,
+      updatedTNA: r.updatedTNA || r.planned || ''
+    }));
+  } catch(e) {
+    console.warn('GAS read failed, using local data', e);
+    return null;
+  }
+}
+
+async function gasWrite(row) {
+  try {
+    const payload = Object.assign({}, row, {
+      styles: Array.isArray(row.styles) ? row.styles.join(',') : row.styles
+    });
+    await fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'write', row: payload })
+    });
+  } catch(e) { console.warn('GAS write failed', e); }
+}
+
+async function gasUpdate(id, row) {
+  try {
+    const payload = Object.assign({}, row, {
+      styles: Array.isArray(row.styles) ? row.styles.join(',') : row.styles
+    });
+    await fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'update', id, row: payload })
+    });
+  } catch(e) { console.warn('GAS update failed', e); }
+}
+
+async function gasDelete(id) {
+  try {
+    await fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'delete', id })
+    });
+  } catch(e) { console.warn('GAS delete failed', e); }
+}
+
+let syncStatus = 'local'; // 'local' | 'live' | 'error'
+function setSyncBadge(status) {
+  syncStatus = status;
+  const el = document.getElementById('syncBadge');
+  if (!el) return;
+  const map = {
+    local:   { txt: '⚡ Local mode', cls: 'badge-local' },
+    loading: { txt: '⟳ Connecting…', cls: 'badge-loading' },
+    live:    { txt: '● Live · Google Sheets', cls: 'badge-live' },
+    error:   { txt: '✕ Sheet offline', cls: 'badge-error' }
+  };
+  const s = map[status] || map.local;
+  el.textContent = s.txt;
+  el.className = 'sync-badge ' + s.cls;
+}
+
+let activeSeason = 'SS26';
+
+function buildSeasons() {
+  const wrap = document.getElementById('seasonChips');
+  wrap.innerHTML = `<div class="season-chip active">SS 2026</div>`;
+}
+function setSeason(s, el) {
+  activeSeason = s;
+  applyFilters();
+}
+
+// ════════════════════════════════════════════
+// DATA
+// ════════════════════════════════════════════
+const remarks = {};
+const emailLog = [];
+
+let tnaData = [
+
+  // ══════════════════════════════════════════
+  // SS26 — DRESS SHIRTS (DS) × 25
+  // ══════════════════════════════════════════
+  {id:'DS-001',season:'SS26',cat:'DRESS SHIRT',desc:'White Poplin Non-Iron Dress Shirt',vendor:'Ranger Apparels',stage:'QC Inspection',planned:'2026-02-02',actual:'2026-03-04',progress:90,resp:'rajesh.kumar@rbl.com',delayReason:'',styles:['DS-001-WHT-15','DS-001-WHT-155','DS-001-WHT-16'],qty:650},
+  {id:'DS-002',season:'SS26',cat:'DRESS SHIRT',desc:'Blue Bengal Stripe Dress Shirt',vendor:'Ranger Apparels',stage:'Bulk Production',planned:'2026-02-15',actual:'2026-02-25',progress:75,resp:'priya.mehta@rbl.com',delayReason:'Fabric width issue — yarn count mismatch from mill',styles:['DS-002-STR-15','DS-002-STR-155','DS-002-STR-16'],qty:450},
+  {id:'DS-003',season:'SS26',cat:'DRESS SHIRT',desc:'Luxury Dobby Formal Shirt',vendor:'R K Industries',stage:'Fit Sample',planned:'2026-03-28',actual:'2026-03-27',progress:55,resp:'rajesh.kumar@rbl.com',delayReason:'',styles:['DS-003-BLK-15','DS-003-NVY-15'],qty:550},
+  {id:'DS-004',season:'SS26',cat:'DRESS SHIRT',desc:'Oxford Pinpoint Club Collar',vendor:'R K Industries',stage:'Fabric Sourcing',planned:'2026-03-02',actual:'2026-03-14',progress:30,resp:'amit.singh@rbl.com',delayReason:'Import fabric from Italy — customs clearance delay + MOQ shortfall at mill',styles:['DS-004-NAV-15','DS-004-NAV-16'],qty:500},
+  {id:'DS-005',season:'SS26',cat:'DRESS SHIRT',desc:'Pink Gingham Check Dress Shirt',vendor:'Ranger Apparels',stage:'PP Sample',planned:'2025-11-28',actual:'2025-11-27',progress:82,resp:'priya.mehta@rbl.com',delayReason:'',styles:['DS-005-PNK-15','DS-005-PNK-155'],qty:650},
+  {id:'DS-006',season:'SS26',cat:'DRESS SHIRT',desc:'Supima Herringbone Formal Shirt',vendor:'R K Industries',stage:'Bulk Production',planned:'2026-03-20',actual:'2026-03-16',progress:88,resp:'rajesh.kumar@rbl.com',delayReason:'',styles:['DS-006-WHT-15','DS-006-BLU-15'],qty:650},
+  {id:'DS-007',season:'SS26',cat:'DRESS SHIRT',desc:'Navy End-on-End Dress Shirt',vendor:'Ranger Apparels',stage:'QC Inspection',planned:'2026-03-30',actual:'2026-03-31',progress:93,resp:'priya.mehta@rbl.com',delayReason:'',styles:['DS-007-NVY-15','DS-007-NVY-16'],qty:700},
+  {id:'DS-008',season:'SS26',cat:'DRESS SHIRT',desc:'Pale Yellow Twill Dress Shirt',vendor:'Ranger Apparels',stage:'Bulk Production',planned:'2025-12-02',actual:'2026-01-30',progress:60,resp:'rajesh.kumar@rbl.com',delayReason:'Twill weave dye lot mismatch — reprocessing at dye house',styles:['DS-008-YLW-15','DS-008-YLW-155'],qty:500},
+  {id:'DS-009',season:'SS26',cat:'DRESS SHIRT',desc:'White Piqué Bib Tuxedo Shirt',vendor:'R K Industries',stage:'Proto Sample',planned:'2025-11-13',actual:'2026-01-06',progress:35,resp:'amit.singh@rbl.com',delayReason:'Piqué bib construction complexity — 2 proto rejections for placket alignment',styles:['DS-009-WHT-15'],qty:600},
+  {id:'DS-010',season:'SS26',cat:'DRESS SHIRT',desc:'Lavender Fine Stripe Dress Shirt',vendor:'Ranger Apparels',stage:'Fit Sample',planned:'2026-01-18',actual:'2026-02-25',progress:62,resp:'priya.mehta@rbl.com',delayReason:'',styles:['DS-010-LAV-15','DS-010-LAV-155'],qty:450},
+  {id:'DS-011',season:'SS26',cat:'DRESS SHIRT',desc:'Sea Island Cotton Luxury Shirt',vendor:'R K Industries',stage:'Fabric Sourcing',planned:'2026-02-04',actual:'2026-03-31',progress:20,resp:'rajesh.kumar@rbl.com',delayReason:'Sea Island cotton allocation delayed — Barbados harvest shortfall impacted supply chain',styles:['DS-011-WHT-15'],qty:500},
+  {id:'DS-012',season:'SS26',cat:'DRESS SHIRT',desc:'Blue Tattersall Check Shirt',vendor:'Ranger Apparels',stage:'Bulk Production',planned:'2025-11-22',actual:'2025-11-20',progress:86,resp:'priya.mehta@rbl.com',delayReason:'',styles:['DS-012-BLU-15','DS-012-BLU-16'],qty:600},
+  {id:'DS-013',season:'SS26',cat:'DRESS SHIRT',desc:'Ecru Irish Linen Dress Shirt',vendor:'R K Industries',stage:'QC Inspection',planned:'2025-12-22',actual:'2026-01-29',progress:94,resp:'rajesh.kumar@rbl.com',delayReason:'',styles:['DS-013-ECR-15','DS-013-ECR-155'],qty:450},
+  {id:'DS-014',season:'SS26',cat:'DRESS SHIRT',desc:'Charcoal Dobby Weave Shirt',vendor:'Ranger Apparels',stage:'PP Sample',planned:'2026-03-15',actual:'2026-03-31',progress:79,resp:'priya.mehta@rbl.com',delayReason:'',styles:['DS-014-CHR-15'],qty:500},
+  {id:'DS-015',season:'SS26',cat:'DRESS SHIRT',desc:'Egyptian Cotton Broadcloth Shirt',vendor:'R K Industries',stage:'Bulk Production',planned:'2026-02-20',actual:'2026-02-27',progress:90,resp:'rajesh.kumar@rbl.com',delayReason:'',styles:['DS-015-WHT-15','DS-015-BLU-15','DS-015-PNK-15'],qty:650},
+  {id:'DS-016',season:'SS26',cat:'DRESS SHIRT',desc:'Windowpane Check Dress Shirt',vendor:'Ranger Apparels',stage:'Fit Sample',planned:'2026-02-13',actual:'2026-02-18',progress:48,resp:'priya.mehta@rbl.com',delayReason:'Check alignment off at placket — required pattern rework and resetting check repeat',styles:['DS-016-GRY-15','DS-016-BLU-15'],qty:600},
+  {id:'DS-017',season:'SS26',cat:'DRESS SHIRT',desc:'White Spread Collar French Cuff',vendor:'R K Industries',stage:'QC Inspection',planned:'2025-11-17',actual:'2025-11-30',progress:96,resp:'rajesh.kumar@rbl.com',delayReason:'',styles:['DS-017-WHT-15','DS-017-WHT-16'],qty:500},
+  {id:'DS-018',season:'SS26',cat:'DRESS SHIRT',desc:'Sky Blue Zephyr Weave Shirt',vendor:'Ranger Apparels',stage:'Bulk Production',planned:'2025-11-10',actual:'2025-11-28',progress:88,resp:'priya.mehta@rbl.com',delayReason:'',styles:['DS-018-SKY-15','DS-018-SKY-155'],qty:650},
+  {id:'DS-019',season:'SS26',cat:'DRESS SHIRT',desc:'Burgundy Micro-Dot Dress Shirt',vendor:'Ranger Apparels',stage:'PP Sample',planned:'2026-02-27',actual:'2026-03-15',progress:55,resp:'rajesh.kumar@rbl.com',delayReason:'Micro-dot printing registration off — vendor machine calibration required',styles:['DS-019-BRG-15'],qty:700},
+  {id:'DS-020',season:'SS26',cat:'DRESS SHIRT',desc:'White Twill Cutaway Collar Shirt',vendor:'R K Industries',stage:'QC Inspection',planned:'2026-02-27',actual:'2026-02-26',progress:97,resp:'priya.mehta@rbl.com',delayReason:'',styles:['DS-020-WHT-15','DS-020-WHT-155','DS-020-WHT-16'],qty:450},
+  {id:'DS-021',season:'SS26',cat:'DRESS SHIRT',desc:'Mint Green Jacquard Dress Shirt',vendor:'Ranger Apparels',stage:'Fit Sample',planned:'2026-03-03',actual:'2026-03-26',progress:65,resp:'rajesh.kumar@rbl.com',delayReason:'',styles:['DS-021-MNT-15'],qty:700},
+  {id:'DS-022',season:'SS26',cat:'DRESS SHIRT',desc:'Ivory Silk-Linen Blend Shirt',vendor:'R K Industries',stage:'Proto Sample',planned:'2025-11-09',actual:'2025-12-12',progress:28,resp:'priya.mehta@rbl.com',delayReason:'Silk-linen blend sourcing from Como, Italy — import duty reclassification causing clearance delay',styles:['DS-022-IVR-15'],qty:650},
+
+  // ══════════════════════════════════════════
+  // SS26 — SPORT SHIRTS (SP) × 18
+  // ══════════════════════════════════════════
+  {id:'SP-001',season:'SS26',cat:'SPORT SHIRT',desc:'Linen Blend Short-Sleeve Sport Shirt',vendor:'Ranger Apparels',stage:'PP Sample',planned:'2026-01-04',actual:'2026-02-05',progress:80,resp:'amit.singh@rbl.com',delayReason:'',styles:['SP-001-BLU-M','SP-001-GRN-M','SP-001-WHT-M'],qty:550},
+  {id:'SP-002',season:'SS26',cat:'SPORT SHIRT',desc:'Madras Check Sport Shirt',vendor:'Sparc Far East',stage:'Bulk Production',planned:'2026-03-10',actual:'2026-03-31',progress:70,resp:'neha.sharma@rbl.com',delayReason:'',styles:['SP-002-CHK-M','SP-002-CHK-L'],qty:600},
+  {id:'SP-003',season:'SS26',cat:'SPORT SHIRT',desc:'Seersucker Stripe Sport Shirt',vendor:'Ranger Apparels',stage:'QC Inspection',planned:'2026-01-14',actual:'2026-03-12',progress:92,resp:'amit.singh@rbl.com',delayReason:'',styles:['SP-003-BLU-M','SP-003-BLU-L','SP-003-BLU-XL'],qty:600},
+  {id:'SP-004',season:'SS26',cat:'SPORT SHIRT',desc:'Camp Collar Floral Print Shirt',vendor:'Sparc Far East',stage:'Fit Sample',planned:'2025-11-28',actual:'2025-12-04',progress:38,resp:'neha.sharma@rbl.com',delayReason:'Digital print colour fastness failure — 2 wash tests failed, reformulation of ink required',styles:['SP-004-FLR-M','SP-004-FLR-L'],qty:550},
+  {id:'SP-005',season:'SS26',cat:'SPORT SHIRT',desc:'Oxford Button-Down Sport Shirt',vendor:'Ranger Apparels',stage:'Bulk Production',planned:'2025-11-21',actual:'2025-11-28',progress:87,resp:'amit.singh@rbl.com',delayReason:'',styles:['SP-005-BLU-M','SP-005-BLU-L','SP-005-WHT-M'],qty:650},
+  {id:'SP-006',season:'SS26',cat:'SPORT SHIRT',desc:'Indigo Washed Chambray Shirt',vendor:'Sparc Far East',stage:'PP Sample',planned:'2026-02-10',actual:'2026-02-09',progress:76,resp:'neha.sharma@rbl.com',delayReason:'',styles:['SP-006-IND-M','SP-006-IND-L'],qty:500},
+  {id:'SP-007',season:'SS26',cat:'SPORT SHIRT',desc:'Guayabera Embroidered Shirt',vendor:'Ranger Apparels',stage:'Fit Sample',planned:'2025-11-18',actual:'2025-12-29',progress:62,resp:'amit.singh@rbl.com',delayReason:'',styles:['SP-007-WHT-M','SP-007-ECR-M'],qty:550},
+  {id:'SP-008',season:'SS26',cat:'SPORT SHIRT',desc:'Printed Paisley Resort Shirt',vendor:'Sparc Far East',stage:'Proto Sample',planned:'2026-03-08',actual:'2026-03-31',progress:22,resp:'neha.sharma@rbl.com',delayReason:'Rotary print screen development delayed at print house — Jaipur vendor capacity crunch',styles:['SP-008-PAI-M'],qty:600},
+  {id:'SP-009',season:'SS26',cat:'SPORT SHIRT',desc:'Vintage Washed Denim Shirt',vendor:'Sparc Far East',stage:'Bulk Production',planned:'2025-12-03',actual:'2026-01-22',progress:78,resp:'amit.singh@rbl.com',delayReason:'Stone wash water treatment compliance issue — ETP clearance delay',styles:['SP-009-DEN-M','SP-009-DEN-L'],qty:550},
+  {id:'SP-010',season:'SS26',cat:'SPORT SHIRT',desc:'Cotton Poplin Aloha Shirt',vendor:'Ranger Apparels',stage:'QC Inspection',planned:'2026-01-24',actual:'2026-03-03',progress:95,resp:'neha.sharma@rbl.com',delayReason:'',styles:['SP-010-AHR-M','SP-010-AHR-L'],qty:600},
+  {id:'SP-011',season:'SS26',cat:'SPORT SHIRT',desc:'Microcheck Short-Sleeve Shirt',vendor:'Ranger Apparels',stage:'Bulk Production',planned:'2025-12-19',actual:'2026-01-20',progress:89,resp:'amit.singh@rbl.com',delayReason:'',styles:['SP-011-CHK-M','SP-011-CHK-L','SP-011-CHK-XL'],qty:550},
+  {id:'SP-012',season:'SS26',cat:'SPORT SHIRT',desc:'Corduroy Western Sport Shirt',vendor:'Sparc Far East',stage:'Fit Sample',planned:'2026-03-18',actual:'2026-03-31',progress:58,resp:'neha.sharma@rbl.com',delayReason:'',styles:['SP-012-TAN-M','SP-012-NVY-M'],qty:550},
+  {id:'SP-013',season:'SS26',cat:'SPORT SHIRT',desc:'Jersey Knit Sport Shirt',vendor:'SRV Knits',stage:'PP Sample',planned:'2025-11-01',actual:'2025-11-26',progress:83,resp:'amit.singh@rbl.com',delayReason:'',styles:['SP-013-GRY-M','SP-013-GRY-L'],qty:400},
+  {id:'SP-014',season:'SS26',cat:'SPORT SHIRT',desc:'Dobby Texture Casual Shirt',vendor:'Ranger Apparels',stage:'Bulk Production',planned:'2026-02-02',actual:'2026-03-05',progress:91,resp:'neha.sharma@rbl.com',delayReason:'',styles:['SP-014-WHT-M','SP-014-BLU-M'],qty:450},
+  {id:'SP-015',season:'SS26',cat:'SPORT SHIRT',desc:'Hemp Blend Relaxed Sport Shirt',vendor:'Sparc Far East',stage:'Fabric Sourcing',planned:'2026-01-01',actual:'2026-01-31',progress:18,resp:'amit.singh@rbl.com',delayReason:'Hemp fabric certification delay — GOTS compliance documentation pending from Ludhiana mill',styles:['SP-015-ECR-M'],qty:450},
+  {id:'SP-016',season:'SS26',cat:'SPORT SHIRT',desc:'Silk Twill Short-Sleeve Shirt',vendor:'R K Industries',stage:'Proto Sample',planned:'2026-03-27',actual:'2026-03-31',progress:45,resp:'neha.sharma@rbl.com',delayReason:'Silk sourcing from Varanasi — quality inconsistency in momme weight across dye lots',styles:['SP-016-BLU-M','SP-016-GRN-M'],qty:400},
+  {id:'SP-017',season:'SS26',cat:'SPORT SHIRT',desc:'Pigment Dye Garment-Washed Shirt',vendor:'Sparc Far East',stage:'Bulk Production',planned:'2026-01-24',actual:'2026-01-25',progress:85,resp:'amit.singh@rbl.com',delayReason:'',styles:['SP-017-BRN-M','SP-017-OLV-M','SP-017-TER-M'],qty:450},
+  {id:'SP-018',season:'SS26',cat:'SPORT SHIRT',desc:'Fil Coupé Jacquard Sport Shirt',vendor:'Ranger Apparels',stage:'Fit Sample',planned:'2026-03-05',actual:'2026-03-31',progress:67,resp:'neha.sharma@rbl.com',delayReason:'',styles:['SP-018-WHT-M','SP-018-BLU-M'],qty:400},
+
+  // ══════════════════════════════════════════
+  // SS26 — KNITS (NK) × 22
+  // ══════════════════════════════════════════
+  {id:'NK-001',season:'SS26',cat:'KNITS',desc:'Merino Wool Polo Shirt',vendor:'SRV Knits',stage:'PP Sample',planned:'2026-02-08',actual:'2026-03-29',progress:78,resp:'sunita.patel@rbl.com',delayReason:'',styles:['NK-001-NVY-M','NK-001-NVY-L','NK-001-WHT-M'],qty:700},
+  {id:'NK-002',season:'SS26',cat:'KNITS',desc:'Supima Cotton Crewneck Sweater',vendor:'Maral Overseas',stage:'QC Inspection',planned:'2025-11-22',actual:'2025-11-18',progress:88,resp:'sunita.patel@rbl.com',delayReason:'Minor colour matching issue on crew rib',styles:['NK-002-WHT-M','NK-002-GRY-M'],qty:550},
+  {id:'NK-003',season:'SS26',cat:'KNITS',desc:'Cashmere Blend V-Neck Pullover',vendor:'SRV Knits',stage:'Fit Sample',planned:'2026-02-08',actual:'2026-03-25',progress:60,resp:'neha.sharma@rbl.com',delayReason:'',styles:['NK-003-CAM-M','NK-003-CAM-L'],qty:750},
+  {id:'NK-004',season:'SS26',cat:'KNITS',desc:'Cable Knit Sweater Luxury',vendor:'Maral Overseas',stage:'Proto Sample',planned:'2026-01-20',actual:'2026-01-28',progress:25,resp:'sunita.patel@rbl.com',delayReason:'Yarn import delay — Scottish merino — customs + vendor capacity constraint at Maral',styles:['NK-004-CRM-M','NK-004-CRM-L'],qty:550},
+  {id:'NK-005',season:'SS26',cat:'KNITS',desc:'Pima Cotton Tipped Polo',vendor:'SRV Knits',stage:'Bulk Production',planned:'2025-11-21',actual:'2026-01-10',progress:90,resp:'sunita.patel@rbl.com',delayReason:'',styles:['NK-005-NVY-M','NK-005-WHT-M','NK-005-RED-M'],qty:650},
+  {id:'NK-006',season:'SS26',cat:'KNITS',desc:'Ribbed Mock-Neck Cotton Pullover',vendor:'Maral Overseas',stage:'PP Sample',planned:'2025-12-25',actual:'2026-01-27',progress:77,resp:'neha.sharma@rbl.com',delayReason:'',styles:['NK-006-BLK-M','NK-006-GRY-M'],qty:850},
+  {id:'NK-007',season:'SS26',cat:'KNITS',desc:'Merino Fine-Gauge Cardigan',vendor:'SRV Knits',stage:'Fit Sample',planned:'2026-01-05',actual:'2026-01-09',progress:63,resp:'sunita.patel@rbl.com',delayReason:'',styles:['NK-007-NVY-M','NK-007-CAM-M'],qty:750},
+  {id:'NK-008',season:'SS26',cat:'KNITS',desc:'Cotton Slub Jersey Polo',vendor:'Maral Overseas',stage:'Bulk Production',planned:'2025-11-01',actual:'2025-11-05',progress:50,resp:'neha.sharma@rbl.com',delayReason:'Slub yarn inconsistency — 3 bulk lot rejections — vendor switching yarn supplier',styles:['NK-008-WHT-M','NK-008-BLU-M'],qty:700},
+  {id:'NK-009',season:'SS26',cat:'KNITS',desc:'Linen-Cotton Knit Polo',vendor:'SRV Knits',stage:'QC Inspection',planned:'2026-01-28',actual:'2026-03-19',progress:94,resp:'sunita.patel@rbl.com',delayReason:'',styles:['NK-009-ECR-M','NK-009-NVY-M'],qty:750},
+  {id:'NK-010',season:'SS26',cat:'KNITS',desc:'Thermal Waffle Knit Henley',vendor:'Maral Overseas',stage:'PP Sample',planned:'2026-01-05',actual:'2026-01-24',progress:81,resp:'neha.sharma@rbl.com',delayReason:'',styles:['NK-010-WHT-M','NK-010-GRY-M','NK-010-NVY-M'],qty:800},
+  {id:'NK-011',season:'SS26',cat:'KNITS',desc:'Cashmere Polo Luxury Edition',vendor:'SRV Knits',stage:'Proto Sample',planned:'2026-03-25',actual:'2026-03-31',progress:22,resp:'sunita.patel@rbl.com',delayReason:'Pure cashmere procurement — Mongolia supply constraints + CITES documentation for luxury grade',styles:['NK-011-CRM-M'],qty:800},
+  {id:'NK-012',season:'SS26',cat:'KNITS',desc:'French Terry Zip-Neck Pullover',vendor:'Maral Overseas',stage:'Bulk Production',planned:'2026-02-23',actual:'2026-02-25',progress:87,resp:'neha.sharma@rbl.com',delayReason:'',styles:['NK-012-NVY-M','NK-012-GRY-M'],qty:600},
+  {id:'NK-013',season:'SS26',cat:'KNITS',desc:'Intarsia Argyle V-Neck Sweater',vendor:'SRV Knits',stage:'Fit Sample',planned:'2026-02-17',actual:'2026-02-19',progress:42,resp:'sunita.patel@rbl.com',delayReason:'Argyle intarsia programming complexity — colour separation issues at flat-knit machine',styles:['NK-013-NVY-M'],qty:550},
+  {id:'NK-014',season:'SS26',cat:'KNITS',desc:'Supima Stripe Polo',vendor:'Maral Overseas',stage:'Bulk Production',planned:'2025-12-16',actual:'2026-02-14',progress:89,resp:'neha.sharma@rbl.com',delayReason:'',styles:['NK-014-BLU-M','NK-014-BLU-L'],qty:600},
+  {id:'NK-015',season:'SS26',cat:'KNITS',desc:'Cotton-Modal Blend Crewneck',vendor:'SRV Knits',stage:'QC Inspection',planned:'2026-01-04',actual:'2026-01-04',progress:93,resp:'sunita.patel@rbl.com',delayReason:'',styles:['NK-015-GRY-M','NK-015-NVY-M','NK-015-BLK-M'],qty:600},
+  {id:'NK-016',season:'SS26',cat:'KNITS',desc:'Heritage Fair Isle Crew Sweater',vendor:'SRV Knits',stage:'Proto Sample',planned:'2026-02-22',actual:'2026-02-23',progress:30,resp:'neha.sharma@rbl.com',delayReason:'Fair Isle 8-colour knit — programming + production time heavily underestimated in WS',styles:['NK-016-NVY-M'],qty:600},
+  {id:'NK-017',season:'SS26',cat:'KNITS',desc:'Double-Knit Structured Polo',vendor:'Maral Overseas',stage:'PP Sample',planned:'2025-12-04',actual:'2026-01-09',progress:80,resp:'sunita.patel@rbl.com',delayReason:'',styles:['NK-017-WHT-M','NK-017-NVY-M'],qty:850},
+  {id:'NK-018',season:'SS26',cat:'KNITS',desc:'Recycled Wool Blend Pullover',vendor:'Maral Overseas',stage:'Fabric Sourcing',planned:'2025-11-24',actual:'2025-12-15',progress:15,resp:'neha.sharma@rbl.com',delayReason:'GRS-certified recycled wool certification renewal delayed at Ahmedabad processing unit',styles:['NK-018-GRY-M'],qty:800},
+  {id:'NK-019',season:'SS26',cat:'KNITS',desc:'Ottoman Rib Cotton Polo',vendor:'SRV Knits',stage:'Bulk Production',planned:'2025-12-16',actual:'2025-12-26',progress:86,resp:'sunita.patel@rbl.com',delayReason:'',styles:['NK-019-NVY-M','NK-019-WHT-M','NK-019-GRN-M'],qty:600},
+  {id:'NK-020',season:'SS26',cat:'KNITS',desc:'Merino Zip Cardigan Fine-Gauge',vendor:'SRV Knits',stage:'Fit Sample',planned:'2026-01-18',actual:'2026-03-04',progress:66,resp:'neha.sharma@rbl.com',delayReason:'',styles:['NK-020-NVY-M','NK-020-CHR-M'],qty:750},
+  {id:'NK-021',season:'SS26',cat:'KNITS',desc:'Texture-Block Cotton Sweater',vendor:'Maral Overseas',stage:'Bulk Production',planned:'2026-03-10',actual:'2026-03-31',progress:91,resp:'sunita.patel@rbl.com',delayReason:'',styles:['NK-021-ECR-M','NK-021-BLU-M'],qty:650},
+  {id:'NK-022',season:'SS26',cat:'KNITS',desc:'Pointelle Stitch V-Neck Pullover',vendor:'SRV Knits',stage:'QC Inspection',planned:'2026-02-20',actual:'2026-02-28',progress:95,resp:'neha.sharma@rbl.com',delayReason:'',styles:['NK-022-CRM-M','NK-022-PNK-M'],qty:850},
+
+  // ══════════════════════════════════════════
+  // SS26 — CHINOS (CH) × 16
+  // ══════════════════════════════════════════
+  {id:'CH-001',season:'SS26',cat:'CHINOS',desc:'Stretch Garment-Dyed Chino',vendor:'Denim Creation',stage:'Bulk Production',planned:'2026-02-04',actual:'2026-02-15',progress:82,resp:'amit.singh@rbl.com',delayReason:'',styles:['CH-001-KHK-30','CH-001-KHK-32','CH-001-OLV-30'],qty:700},
+  {id:'CH-002',season:'SS26',cat:'CHINOS',desc:'Pleated Wide-Leg Trouser',vendor:'Denim Creation',stage:'Fit Sample',planned:'2026-03-12',actual:'2026-03-31',progress:40,resp:'neha.sharma@rbl.com',delayReason:'Pattern grading error — 3 fit rejections — block rebuilt from scratch',styles:['CH-002-OLV-30','CH-002-TAN-30'],qty:550},
+  {id:'CH-003',season:'SS26',cat:'CHINOS',desc:'Slim 5-Pocket Cotton Pant',vendor:'Denim Creation',stage:'QC Inspection',planned:'2026-03-04',actual:'2026-03-31',progress:95,resp:'amit.singh@rbl.com',delayReason:'',styles:['CH-003-KHK-30','CH-003-NVY-30','CH-003-GRY-30'],qty:450},
+  {id:'CH-004',season:'SS26',cat:'CHINOS',desc:'Club Chino Classic Fit',vendor:'Denim Creation',stage:'Bulk Production',planned:'2026-01-21',actual:'2026-02-14',progress:89,resp:'neha.sharma@rbl.com',delayReason:'',styles:['CH-004-KHK-32','CH-004-WHT-32','CH-004-NVY-32'],qty:400},
+  {id:'CH-005',season:'SS26',cat:'CHINOS',desc:'Linen Blend Drawstring Pant',vendor:'Sparc Far East',stage:'Fit Sample',planned:'2026-01-20',actual:'2026-02-17',progress:58,resp:'amit.singh@rbl.com',delayReason:'',styles:['CH-005-ECR-S','CH-005-ECR-M'],qty:450},
+  {id:'CH-006',season:'SS26',cat:'CHINOS',desc:'Pinstripe Tailored Trouser',vendor:'Denim Creation',stage:'Proto Sample',planned:'2025-11-21',actual:'2025-12-08',progress:30,resp:'neha.sharma@rbl.com',delayReason:'Pinstripe fabric from Italy on long lead time — Albini mill allocation pushed',styles:['CH-006-NVY-30'],qty:600},
+  {id:'CH-007',season:'SS26',cat:'CHINOS',desc:'Cargo Utility Chino',vendor:'Sparc Far East',stage:'PP Sample',planned:'2025-11-11',actual:'2025-11-16',progress:74,resp:'amit.singh@rbl.com',delayReason:'',styles:['CH-007-OLV-30','CH-007-KHK-30'],qty:600},
+  {id:'CH-008',season:'SS26',cat:'CHINOS',desc:'Cotton Twill Bermuda Short',vendor:'Denim Creation',stage:'Bulk Production',planned:'2026-02-21',actual:'2026-03-31',progress:88,resp:'neha.sharma@rbl.com',delayReason:'',styles:['CH-008-KHK-32','CH-008-WHT-32','CH-008-NVY-32'],qty:500},
+  {id:'CH-009',season:'SS26',cat:'CHINOS',desc:'Washed Corduroy Five-Pocket Pant',vendor:'Sparc Far East',stage:'Fit Sample',planned:'2025-12-10',actual:'2025-12-10',progress:45,resp:'amit.singh@rbl.com',delayReason:'Corduroy wale direction inconsistency in bulk — cutting restarted to fix pile direction',styles:['CH-009-BRN-30','CH-009-GRN-30'],qty:400},
+  {id:'CH-010',season:'SS26',cat:'CHINOS',desc:'Moleskin Dress Chino',vendor:'Denim Creation',stage:'Bulk Production',planned:'2026-03-23',actual:'2026-03-31',progress:90,resp:'neha.sharma@rbl.com',delayReason:'',styles:['CH-010-CHR-30','CH-010-CHR-32'],qty:500},
+  {id:'CH-011',season:'SS26',cat:'CHINOS',desc:'Technical Stretch Golf Trouser',vendor:'Denim Creation',stage:'QC Inspection',planned:'2026-03-25',actual:'2026-03-30',progress:96,resp:'amit.singh@rbl.com',delayReason:'',styles:['CH-011-NVY-30','CH-011-GRY-30','CH-011-KHK-30'],qty:700},
+  {id:'CH-012',season:'SS26',cat:'CHINOS',desc:'Printed Madras Casual Short',vendor:'Sparc Far East',stage:'PP Sample',planned:'2026-01-14',actual:'2026-02-10',progress:72,resp:'neha.sharma@rbl.com',delayReason:'',styles:['CH-012-MDR-S','CH-012-MDR-M'],qty:550},
+  {id:'CH-013',season:'SS26',cat:'CHINOS',desc:'Flannel-Lined Chino Trouser',vendor:'Denim Creation',stage:'Fit Sample',planned:'2026-03-11',actual:'2026-03-31',progress:60,resp:'amit.singh@rbl.com',delayReason:'',styles:['CH-013-KHK-30','CH-013-GRY-30'],qty:650},
+  {id:'CH-014',season:'SS26',cat:'CHINOS',desc:'Japanese Selvedge Cotton Chino',vendor:'Denim Creation',stage:'Proto Sample',planned:'2026-03-19',actual:'2026-03-31',progress:20,resp:'neha.sharma@rbl.com',delayReason:'Selvedge cotton from Japan — Nisshinbo mill shipment held at customs, OCR delay on material certificate',styles:['CH-014-RAW-30'],qty:650},
+  {id:'CH-015',season:'SS26',cat:'CHINOS',desc:'Elasticated Waist Resort Trouser',vendor:'Sparc Far East',stage:'Bulk Production',planned:'2025-12-12',actual:'2026-02-07',progress:87,resp:'amit.singh@rbl.com',delayReason:'',styles:['CH-015-WHT-S','CH-015-BLU-S','CH-015-OLV-S'],qty:400},
+  {id:'CH-016',season:'SS26',cat:'CHINOS',desc:'Double-Pleat Wool-Blend Trouser',vendor:'Denim Creation',stage:'Fit Sample',planned:'2025-11-21',actual:'2025-11-28',progress:38,resp:'neha.sharma@rbl.com',delayReason:'Wool-blend fabric drape issue — interlining weight changed, requiring full re-pattern',styles:['CH-016-CHR-30'],qty:600},
+
+  // ══════════════════════════════════════════
+  // SS26 — SHACKETS (SH) × 12
+  // ══════════════════════════════════════════
+  {id:'SH-001',season:'SS26',cat:'SHACKET',desc:'Flannel Check Shacket',vendor:'Sparc Far East',stage:'PP Sample',planned:'2025-11-02',actual:'2025-12-01',progress:76,resp:'amit.singh@rbl.com',delayReason:'',styles:['SH-001-RED-M','SH-001-RED-L'],qty:550},
+  {id:'SH-002',season:'SS26',cat:'SHACKET',desc:'Washed Canvas Utility Shacket',vendor:'R K Industries',stage:'QC Inspection',planned:'2025-11-30',actual:'2025-12-10',progress:92,resp:'sunita.patel@rbl.com',delayReason:'',styles:['SH-002-KHK-M','SH-002-OLV-M'],qty:550},
+  {id:'SH-003',season:'SS26',cat:'SHACKET',desc:'Quilted Nylon Overshirt',vendor:'Sparc Far East',stage:'Bulk Production',planned:'2025-12-21',actual:'2026-02-01',progress:79,resp:'amit.singh@rbl.com',delayReason:'Quilt stitch density specification changed post-approval — additional machine setup',styles:['SH-003-NVY-M','SH-003-BLK-M'],qty:400},
+  {id:'SH-004',season:'SS26',cat:'SHACKET',desc:'Linen CPO Overshirt',vendor:'R K Industries',stage:'Fit Sample',planned:'2025-11-30',actual:'2026-01-04',progress:65,resp:'sunita.patel@rbl.com',delayReason:'',styles:['SH-004-ECR-M','SH-004-BLU-M'],qty:450},
+  {id:'SH-005',season:'SS26',cat:'SHACKET',desc:'Corduroy Shacket Burgundy',vendor:'Sparc Far East',stage:'Proto Sample',planned:'2026-01-29',actual:'2026-02-25',progress:28,resp:'amit.singh@rbl.com',delayReason:'Corduroy fabric from Italy on hold — Bergamo mill production back-log, 8-wale cord not available',styles:['SH-005-BRG-M'],qty:350},
+  {id:'SH-006',season:'SS26',cat:'SHACKET',desc:'Denim Chore Coat Shacket',vendor:'Denim Creation',stage:'Bulk Production',planned:'2026-01-20',actual:'2026-02-04',progress:88,resp:'neha.sharma@rbl.com',delayReason:'',styles:['SH-006-IND-M','SH-006-IND-L'],qty:550},
+  {id:'SH-007',season:'SS26',cat:'SHACKET',desc:'Wool Blend Plaid Shacket',vendor:'Sparc Far East',stage:'QC Inspection',planned:'2026-03-14',actual:'2026-03-31',progress:83,resp:'amit.singh@rbl.com',delayReason:'Button placement spec deviation found in final QC — rework required',styles:['SH-007-PLD-M','SH-007-PLD-L'],qty:550},
+  {id:'SH-008',season:'SS26',cat:'SHACKET',desc:'Fleece Overshirt Zip-Through',vendor:'Maral Overseas',stage:'Bulk Production',planned:'2026-01-13',actual:'2026-02-21',progress:90,resp:'sunita.patel@rbl.com',delayReason:'',styles:['SH-008-GRY-M','SH-008-NVY-M','SH-008-BLK-M'],qty:400},
+  {id:'SH-009',season:'SS26',cat:'SHACKET',desc:'Waxed Cotton Hunting Shirt',vendor:'R K Industries',stage:'Fit Sample',planned:'2026-01-28',actual:'2026-03-25',progress:56,resp:'amit.singh@rbl.com',delayReason:'Waxed finish adhesion uneven — re-processing by coating house in Surat required',styles:['SH-009-OLV-M'],qty:450},
+  {id:'SH-010',season:'SS26',cat:'SHACKET',desc:'Printed Twill Camp Shacket',vendor:'Sparc Far East',stage:'PP Sample',planned:'2025-11-24',actual:'2026-01-15',progress:80,resp:'neha.sharma@rbl.com',delayReason:'',styles:['SH-010-PRT-M','SH-010-PRT-L'],qty:450},
+  {id:'SH-011',season:'SS26',cat:'SHACKET',desc:'Technical Ripstop Overshirt',vendor:'R K Industries',stage:'Bulk Production',planned:'2026-01-06',actual:'2026-01-10',progress:92,resp:'sunita.patel@rbl.com',delayReason:'',styles:['SH-011-OLV-M','SH-011-BLK-M'],qty:350},
+  {id:'SH-012',season:'SS26',cat:'SHACKET',desc:'Silk-Linen Luxury Overshirt',vendor:'R K Industries',stage:'Proto Sample',planned:'2025-11-23',actual:'2025-11-28',progress:18,resp:'amit.singh@rbl.com',delayReason:'Silk-linen combination fabric — Como silk weaving house delayed — 2 fabric quality rejections',styles:['SH-012-IVR-M'],qty:500},
+
+  // ══════════════════════════════════════════
+  // SS26 — BAGS (BG) × 12
+  // ══════════════════════════════════════════
+  {id:'BG-001',season:'SS26',cat:'BAGS',desc:'Full-Grain Leather Weekender Bag',vendor:'Sparc Far East',stage:'Proto Sample',planned:'2026-02-07',actual:'2026-03-18',progress:20,resp:'vikram.das@rbl.com',delayReason:'Italian veg-tan leather supply disrupted — alternate tannery qualification still pending',styles:['BG-001-TAN','BG-001-BRN'],qty:400},
+  {id:'BG-002',season:'SS26',cat:'BAGS',desc:'Leather Briefcase Two-Handle',vendor:'Sparc Far East',stage:'Fit Sample',planned:'2026-03-09',actual:'2026-03-27',progress:42,resp:'vikram.das@rbl.com',delayReason:'Handle attachment construction — D-ring stitching strength test failure',styles:['BG-002-BLK','BG-002-BRN'],qty:650},
+  {id:'BG-003',season:'SS26',cat:'BAGS',desc:'Canvas & Leather Tote Bag',vendor:'Sparc Far East',stage:'Bulk Production',planned:'2026-02-15',actual:'2026-03-13',progress:88,resp:'vikram.das@rbl.com',delayReason:'',styles:['BG-003-TAN','BG-003-NAV'],qty:650},
+  {id:'BG-004',season:'SS26',cat:'BAGS',desc:'Leather Zip Messenger Bag',vendor:'R K Industries',stage:'QC Inspection',planned:'2026-01-30',actual:'2026-03-12',progress:94,resp:'rohit.verma@rbl.com',delayReason:'',styles:['BG-004-BLK','BG-004-TAN'],qty:650},
+  {id:'BG-005',season:'SS26',cat:'BAGS',desc:'Waxed Canvas Duffel Bag',vendor:'Sparc Far East',stage:'PP Sample',planned:'2025-12-30',actual:'2026-02-10',progress:75,resp:'vikram.das@rbl.com',delayReason:'',styles:['BG-005-OLV','BG-005-NVY'],qty:500},
+  {id:'BG-006',season:'SS26',cat:'BAGS',desc:'Leather Card Holder Wallet',vendor:'R K Industries',stage:'Bulk Production',planned:'2026-03-16',actual:'2026-03-31',progress:92,resp:'rohit.verma@rbl.com',delayReason:'',styles:['BG-006-BLK','BG-006-BRN','BG-006-TAN'],qty:450},
+  {id:'BG-007',season:'SS26',cat:'BAGS',desc:'Saffiano Leather Zip Pouch',vendor:'Sparc Far East',stage:'Proto Sample',planned:'2026-01-25',actual:'2026-03-15',progress:22,resp:'vikram.das@rbl.com',delayReason:'Saffiano PU leather certification — EU REACH compliance testing delayed at Chennai lab',styles:['BG-007-NVY','BG-007-BLK'],qty:650},
+  {id:'BG-008',season:'SS26',cat:'BAGS',desc:'Heritage Canvas Book Bag',vendor:'Sparc Far East',stage:'Bulk Production',planned:'2026-01-17',actual:'2026-03-02',progress:87,resp:'vikram.das@rbl.com',delayReason:'',styles:['BG-008-KHK','BG-008-NVY'],qty:650},
+  {id:'BG-009',season:'SS26',cat:'BAGS',desc:'Leather Bifold Dress Wallet',vendor:'R K Industries',stage:'QC Inspection',planned:'2025-12-29',actual:'2026-02-24',progress:96,resp:'rohit.verma@rbl.com',delayReason:'',styles:['BG-009-BLK','BG-009-BRN'],qty:450},
+  {id:'BG-010',season:'SS26',cat:'BAGS',desc:'Nylon Laptop Backpack',vendor:'Sparc Far East',stage:'Fit Sample',planned:'2026-01-30',actual:'2026-03-01',progress:38,resp:'vikram.das@rbl.com',delayReason:'Laptop compartment zipper spec — YKK custom puller lead time 6 weeks longer than planned',styles:['BG-010-BLK','BG-010-NVY'],qty:550},
+  {id:'BG-011',season:'SS26',cat:'BAGS',desc:'Leather & Canvas Holdall',vendor:'Sparc Far East',stage:'PP Sample',planned:'2026-03-17',actual:'2026-03-31',progress:72,resp:'vikram.das@rbl.com',delayReason:'',styles:['BG-011-TAN','BG-011-OLV'],qty:450},
+  {id:'BG-012',season:'SS26',cat:'BAGS',desc:'Full-Grain Belt & Key Fob Set',vendor:'R K Industries',stage:'Bulk Production',planned:'2025-11-28',actual:'2025-12-28',progress:90,resp:'rohit.verma@rbl.com',delayReason:'',styles:['BG-012-BLK-32','BG-012-BRN-32','BG-012-TAN-34'],qty:600},
+
+  // ══════════════════════════════════════════
+  // SS26 — FOOTWEAR (FW) × 14
+  // ══════════════════════════════════════════
+  {id:'FW-001',season:'SS26',cat:'FOOTWEAR',desc:'Leather Cap-Toe Oxford',vendor:'R K Industries',stage:'Bulk Production',planned:'2025-12-22',actual:'2026-02-12',progress:85,resp:'rohit.verma@rbl.com',delayReason:'',styles:['FW-001-BLK-8','FW-001-BLK-9','FW-001-BRN-8'],qty:400},
+  {id:'FW-002',season:'SS26',cat:'FOOTWEAR',desc:'Suede Penny Loafer',vendor:'R K Industries',stage:'Fit Sample',planned:'2026-03-29',actual:'2026-03-31',progress:65,resp:'rohit.verma@rbl.com',delayReason:'Last fitting — heel height adjustment required after buyer review',styles:['FW-002-TAN-8','FW-002-BRN-8'],qty:450},
+  {id:'FW-003',season:'SS26',cat:'FOOTWEAR',desc:'Full-Brogue Wingtip Derby',vendor:'R K Industries',stage:'QC Inspection',planned:'2026-01-03',actual:'2026-02-21',progress:93,resp:'rohit.verma@rbl.com',delayReason:'',styles:['FW-003-BRN-8','FW-003-TAN-8','FW-003-BLK-8'],qty:500},
+  {id:'FW-004',season:'SS26',cat:'FOOTWEAR',desc:'Leather Tassel Loafer',vendor:'R K Industries',stage:'Bulk Production',planned:'2026-02-27',actual:'2026-03-12',progress:90,resp:'rohit.verma@rbl.com',delayReason:'',styles:['FW-004-BRN-8','FW-004-BLK-8'],qty:400},
+  {id:'FW-005',season:'SS26',cat:'FOOTWEAR',desc:'Suede Chelsea Boot',vendor:'Sparc Far East',stage:'Proto Sample',planned:'2025-12-03',actual:'2026-01-21',progress:25,resp:'vikram.das@rbl.com',delayReason:'Chelsea boot last development — 3 prototype rounds failed on heel spring alignment',styles:['FW-005-BRN-8','FW-005-BLK-8'],qty:400},
+  {id:'FW-006',season:'SS26',cat:'FOOTWEAR',desc:'Leather Bit-Buckle Loafer',vendor:'R K Industries',stage:'Fit Sample',planned:'2026-01-17',actual:'2026-02-17',progress:68,resp:'rohit.verma@rbl.com',delayReason:'',styles:['FW-006-BLK-8','FW-006-TAN-8'],qty:550},
+  {id:'FW-007',season:'SS26',cat:'FOOTWEAR',desc:'Canvas Boat Shoe',vendor:'Sparc Far East',stage:'Bulk Production',planned:'2025-11-02',actual:'2025-12-22',progress:88,resp:'vikram.das@rbl.com',delayReason:'',styles:['FW-007-NVY-8','FW-007-WHT-8','FW-007-TAN-8'],qty:500},
+  {id:'FW-008',season:'SS26',cat:'FOOTWEAR',desc:'Leather Lug-Sole Monk Strap',vendor:'R K Industries',stage:'PP Sample',planned:'2025-12-13',actual:'2026-02-06',progress:76,resp:'rohit.verma@rbl.com',delayReason:'',styles:['FW-008-BLK-8','FW-008-BRN-8'],qty:450},
+  {id:'FW-009',season:'SS26',cat:'FOOTWEAR',desc:'Nubuck Plain-Toe Oxford',vendor:'R K Industries',stage:'Bulk Production',planned:'2026-03-10',actual:'2026-03-27',progress:92,resp:'rohit.verma@rbl.com',delayReason:'',styles:['FW-009-BRN-8','FW-009-TAN-8'],qty:450},
+  {id:'FW-010',season:'SS26',cat:'FOOTWEAR',desc:'Espadrille Wedge Slip-On',vendor:'Sparc Far East',stage:'Fit Sample',planned:'2025-12-06',actual:'2026-01-06',progress:44,resp:'vikram.das@rbl.com',delayReason:'Jute outsole supplier in Kolkata — seasonal jute harvest shortfall, alternate material being evaluated',styles:['FW-010-ECR-8','FW-010-NVY-8'],qty:350},
+  {id:'FW-011',season:'SS26',cat:'FOOTWEAR',desc:'Derby Wingtip Brogue Boot',vendor:'R K Industries',stage:'QC Inspection',planned:'2026-02-11',actual:'2026-03-14',progress:94,resp:'rohit.verma@rbl.com',delayReason:'',styles:['FW-011-BRN-8','FW-011-BRN-9'],qty:400},
+  {id:'FW-012',season:'SS26',cat:'FOOTWEAR',desc:'Leather Driving Moccasin',vendor:'R K Industries',stage:'Bulk Production',planned:'2026-03-17',actual:'2026-03-30',progress:89,resp:'rohit.verma@rbl.com',delayReason:'',styles:['FW-012-TAN-8','FW-012-BRN-8','FW-012-BLK-8'],qty:400},
+  {id:'FW-013',season:'SS26',cat:'FOOTWEAR',desc:'Suede Chukka Boot',vendor:'Sparc Far East',stage:'Proto Sample',planned:'2025-11-16',actual:'2026-01-05',progress:20,resp:'vikram.das@rbl.com',delayReason:'Suede from Kanpur tannery — chrome-free tanning process non-compliant — tannery switch underway',styles:['FW-013-TAN-8','FW-013-BRN-8'],qty:450},
+  {id:'FW-014',season:'SS26',cat:'FOOTWEAR',desc:'Leather Sneaker Low-Top',vendor:'Sparc Far East',stage:'Fit Sample',planned:'2025-11-14',actual:'2025-11-13',progress:60,resp:'vikram.das@rbl.com',delayReason:'',styles:['FW-014-WHT-8','FW-014-WHT-9'],qty:400},
+
+  // ══════════════════════════════════════════
+  // SS26 — DRESS SHIRTS EXTENDED (DS-023 to DS-030)
+  // ══════════════════════════════════════════
+  {id:'DS-023',season:'SS26',cat:'DRESS SHIRT',desc:'White Voile Banded Collar Shirt',vendor:'Ranger Apparels',stage:'Fit Sample',planned:'2026-03-25',actual:'2026-03-31',progress:60,resp:'priya.mehta@rbl.com',delayReason:'',styles:['DS-023-WHT-15','DS-023-WHT-155'],qty:550},
+  {id:'DS-024',season:'SS26',cat:'DRESS SHIRT',desc:'Navy Shadow Stripe Formal',vendor:'R K Industries',stage:'Bulk Production',planned:'2026-02-23',actual:'2026-03-31',progress:86,resp:'rajesh.kumar@rbl.com',delayReason:'',styles:['DS-024-NVY-15','DS-024-NVY-16'],qty:500},
+  {id:'DS-025',season:'SS26',cat:'DRESS SHIRT',desc:'Burgundy Ground Microcheck',vendor:'Ranger Apparels',stage:'PP Sample',planned:'2026-01-03',actual:'2026-02-26',progress:50,resp:'priya.mehta@rbl.com',delayReason:'Microcheck ground colour inconsistency — dye bath requires full reprocessing at mill',styles:['DS-025-BRG-15'],qty:750},
+  {id:'DS-026',season:'SS26',cat:'DRESS SHIRT',desc:'Poplin Spread Collar Regular Fit',vendor:'R K Industries',stage:'QC Inspection',planned:'2025-11-17',actual:'2026-01-05',progress:94,resp:'rajesh.kumar@rbl.com',delayReason:'',styles:['DS-026-WHT-15','DS-026-BLU-15','DS-026-PNK-15'],qty:550},
+  {id:'DS-027',season:'SS26',cat:'DRESS SHIRT',desc:'Green Windowpane on Blue Shirt',vendor:'Ranger Apparels',stage:'Fit Sample',planned:'2025-11-10',actual:'2025-11-21',progress:62,resp:'priya.mehta@rbl.com',delayReason:'',styles:['DS-027-GRN-15'],qty:500},
+  {id:'DS-028',season:'SS26',cat:'DRESS SHIRT',desc:'Wrinkle-Free Twill Button-Down',vendor:'R K Industries',stage:'Bulk Production',planned:'2026-02-28',actual:'2026-03-31',progress:91,resp:'rajesh.kumar@rbl.com',delayReason:'',styles:['DS-028-WHT-15','DS-028-BLU-15','DS-028-GRY-15'],qty:500},
+  {id:'DS-029',season:'SS26',cat:'DRESS SHIRT',desc:'Double-Cloth Heavy Oxford',vendor:'Ranger Apparels',stage:'Proto Sample',planned:'2026-01-01',actual:'2026-01-31',progress:28,resp:'priya.mehta@rbl.com',delayReason:'Double-cloth weave — Coimbatore loom allocation delayed, capacity crunch at weaving unit',styles:['DS-029-WHT-15','DS-029-BLU-15'],qty:700},
+  {id:'DS-030',season:'SS26',cat:'DRESS SHIRT',desc:'Banker Stripe Fine Poplin',vendor:'R K Industries',stage:'QC Inspection',planned:'2025-11-16',actual:'2025-11-22',progress:95,resp:'rajesh.kumar@rbl.com',delayReason:'',styles:['DS-030-BLU-15','DS-030-PNK-15'],qty:1300},
+
+  // ══════════════════════════════════════════
+  // SS26 — SPORT SHIRTS EXTENDED (SP-019 to SP-027)
+  // ══════════════════════════════════════════
+  {id:'SP-019',season:'SS26',cat:'SPORT SHIRT',desc:'Yarn-Dyed Plaid Flannel Sport Shirt',vendor:'Ranger Apparels',stage:'Bulk Production',planned:'2026-02-24',actual:'2026-03-23',progress:87,resp:'neha.sharma@rbl.com',delayReason:'',styles:['SP-019-PLD-M','SP-019-PLD-L'],qty:450},
+  {id:'SP-020',season:'SS26',cat:'SPORT SHIRT',desc:'Cotton Poplin Patch Pocket Shirt',vendor:'Sparc Far East',stage:'QC Inspection',planned:'2026-01-18',actual:'2026-01-16',progress:93,resp:'amit.singh@rbl.com',delayReason:'',styles:['SP-020-WHT-M','SP-020-BLU-M','SP-020-ECR-M'],qty:550},
+  {id:'SP-021',season:'SS26',cat:'SPORT SHIRT',desc:'Linen-Cotton Blend Banded Shirt',vendor:'Ranger Apparels',stage:'Fit Sample',planned:'2026-03-22',actual:'2026-03-31',progress:64,resp:'neha.sharma@rbl.com',delayReason:'',styles:['SP-021-ECR-M','SP-021-NVY-M'],qty:500},
+  {id:'SP-022',season:'SS26',cat:'SPORT SHIRT',desc:'Tropical Print Resort Shirt',vendor:'Sparc Far East',stage:'Proto Sample',planned:'2025-11-13',actual:'2025-11-09',progress:20,resp:'amit.singh@rbl.com',delayReason:'Digital sublimation print — 3 colour-fastness wash failures — reformulation by ink supplier required',styles:['SP-022-TRP-M'],qty:500},
+  {id:'SP-023',season:'SS26',cat:'SPORT SHIRT',desc:'Tencel Lyocell Camp Collar',vendor:'Ranger Apparels',stage:'Bulk Production',planned:'2025-12-10',actual:'2026-01-26',progress:88,resp:'neha.sharma@rbl.com',delayReason:'',styles:['SP-023-BLU-M','SP-023-GRN-M'],qty:450},
+  {id:'SP-024',season:'SS26',cat:'SPORT SHIRT',desc:'Chambray Button-Down Club Collar',vendor:'Sparc Far East',stage:'PP Sample',planned:'2025-12-26',actual:'2026-02-09',progress:75,resp:'amit.singh@rbl.com',delayReason:'',styles:['SP-024-IND-M','SP-024-IND-L'],qty:450},
+  {id:'SP-025',season:'SS26',cat:'SPORT SHIRT',desc:'Washed Twill Military Shirt',vendor:'Ranger Apparels',stage:'Bulk Production',planned:'2026-02-04',actual:'2026-03-30',progress:90,resp:'neha.sharma@rbl.com',delayReason:'',styles:['SP-025-OLV-M','SP-025-KHK-M','SP-025-TAN-M'],qty:650},
+  {id:'SP-026',season:'SS26',cat:'SPORT SHIRT',desc:'Vintage Wash Oxford Short-Sleeve',vendor:'Sparc Far East',stage:'Fit Sample',planned:'2026-02-26',actual:'2026-03-10',progress:42,resp:'amit.singh@rbl.com',delayReason:'Enzyme wash process non-compliant — ETP certificate issue at Sparc dye unit, GPCB notice received',styles:['SP-026-BLU-M','SP-026-GRY-M'],qty:550},
+  {id:'SP-027',season:'SS26',cat:'SPORT SHIRT',desc:'Dobby Texture Short Sleeve Shirt',vendor:'Ranger Apparels',stage:'QC Inspection',planned:'2026-03-07',actual:'2026-03-31',progress:95,resp:'neha.sharma@rbl.com',delayReason:'',styles:['SP-027-WHT-M','SP-027-BLU-M'],qty:500},
+
+  // ══════════════════════════════════════════
+  // SS26 — KNITS EXTENDED (NK-023 to NK-032)
+  // ══════════════════════════════════════════
+  {id:'NK-023',season:'SS26',cat:'KNITS',desc:'Jacquard Geo-Print Polo',vendor:'SRV Knits',stage:'Fit Sample',planned:'2026-02-18',actual:'2026-03-15',progress:64,resp:'sunita.patel@rbl.com',delayReason:'',styles:['NK-023-NVY-M','NK-023-WHT-M'],qty:650},
+  {id:'NK-024',season:'SS26',cat:'KNITS',desc:'Supima Stripe Crewneck Pullover',vendor:'Maral Overseas',stage:'Bulk Production',planned:'2026-02-10',actual:'2026-03-19',progress:89,resp:'neha.sharma@rbl.com',delayReason:'',styles:['NK-024-NVY-M','NK-024-BLU-M','NK-024-GRN-M'],qty:600},
+  {id:'NK-025',season:'SS26',cat:'KNITS',desc:'Merino Wool Tipped V-Neck',vendor:'SRV Knits',stage:'QC Inspection',planned:'2025-12-05',actual:'2026-01-01',progress:94,resp:'sunita.patel@rbl.com',delayReason:'',styles:['NK-025-NVY-M','NK-025-BRG-M'],qty:600},
+  {id:'NK-026',season:'SS26',cat:'KNITS',desc:'Honeycomb Texture Cotton Polo',vendor:'Maral Overseas',stage:'PP Sample',planned:'2026-03-06',actual:'2026-03-31',progress:80,resp:'neha.sharma@rbl.com',delayReason:'',styles:['NK-026-WHT-M','NK-026-NVY-M'],qty:700},
+  {id:'NK-027',season:'SS26',cat:'KNITS',desc:'Linen Tape Yarn Open-Knit Top',vendor:'SRV Knits',stage:'Proto Sample',planned:'2026-03-26',actual:'2026-03-31',progress:26,resp:'sunita.patel@rbl.com',delayReason:'Open-knit linen tape — yarn procurement from Bangalore weaver delayed, MOQ not met for initial run',styles:['NK-027-ECR-M','NK-027-BLU-M'],qty:600},
+  {id:'NK-028',season:'SS26',cat:'KNITS',desc:'Piqué Texture Polo Luxury',vendor:'Maral Overseas',stage:'Bulk Production',planned:'2025-12-23',actual:'2025-12-20',progress:91,resp:'neha.sharma@rbl.com',delayReason:'',styles:['NK-028-WHT-M','NK-028-NVY-M','NK-028-RED-M'],qty:700},
+  {id:'NK-029',season:'SS26',cat:'KNITS',desc:'Cashmere-Blend Zip Hoodie',vendor:'SRV Knits',stage:'Fit Sample',planned:'2026-01-23',actual:'2026-03-01',progress:44,resp:'sunita.patel@rbl.com',delayReason:'Cashmere-blend zip hoodie — zip box attachment on fine gauge causing ladder runs — re-engineering',styles:['NK-029-GRY-M','NK-029-NVY-M'],qty:800},
+  {id:'NK-030',season:'SS26',cat:'KNITS',desc:'Cotton Birdseye Polo Classic',vendor:'Maral Overseas',stage:'Bulk Production',planned:'2026-01-11',actual:'2026-01-16',progress:88,resp:'neha.sharma@rbl.com',delayReason:'',styles:['NK-030-WHT-M','NK-030-BLU-M','NK-030-GRN-M'],qty:650},
+  {id:'NK-031',season:'SS26',cat:'KNITS',desc:'Merino Crew Neck Slim Fit',vendor:'SRV Knits',stage:'QC Inspection',planned:'2026-01-06',actual:'2026-02-27',progress:96,resp:'sunita.patel@rbl.com',delayReason:'',styles:['NK-031-CHR-M','NK-031-NVY-M','NK-031-BLK-M'],qty:600},
+  {id:'NK-032',season:'SS26',cat:'KNITS',desc:'Multi-Colour Stripe Boatneck',vendor:'Maral Overseas',stage:'Fit Sample',planned:'2026-03-13',actual:'2026-03-31',progress:58,resp:'neha.sharma@rbl.com',delayReason:'Stripe colour registration on circular knit — 1 re-knit required for repeat accuracy',styles:['NK-032-MUL-M'],qty:800},
+
+  // ══════════════════════════════════════════
+  // SS26 — CHINOS EXTENDED (CH-017 to CH-024)
+  // ══════════════════════════════════════════
+  {id:'CH-017',season:'SS26',cat:'CHINOS',desc:'Cotton Drill Slim Short',vendor:'Denim Creation',stage:'Bulk Production',planned:'2026-03-17',actual:'2026-03-31',progress:90,resp:'amit.singh@rbl.com',delayReason:'',styles:['CH-017-KHK-32','CH-017-WHT-32','CH-017-NVY-32'],qty:600},
+  {id:'CH-018',season:'SS26',cat:'CHINOS',desc:'Overdyed Chino 5-Pocket',vendor:'Denim Creation',stage:'QC Inspection',planned:'2025-11-02',actual:'2025-11-02',progress:95,resp:'neha.sharma@rbl.com',delayReason:'',styles:['CH-018-BLU-30','CH-018-GRN-30','CH-018-RED-30'],qty:550},
+  {id:'CH-019',season:'SS26',cat:'CHINOS',desc:'Linen Drawstring Walking Short',vendor:'Sparc Far East',stage:'PP Sample',planned:'2026-03-10',actual:'2026-03-23',progress:74,resp:'amit.singh@rbl.com',delayReason:'',styles:['CH-019-ECR-S','CH-019-NVY-S'],qty:500},
+  {id:'CH-020',season:'SS26',cat:'CHINOS',desc:'Technical Nylon 5-Pocket Pant',vendor:'Denim Creation',stage:'Bulk Production',planned:'2026-01-20',actual:'2026-01-16',progress:87,resp:'neha.sharma@rbl.com',delayReason:'',styles:['CH-020-BLK-30','CH-020-NVY-30','CH-020-KHK-30'],qty:600},
+  {id:'CH-021',season:'SS26',cat:'CHINOS',desc:'Flat-Front Classic Chino',vendor:'Denim Creation',stage:'QC Inspection',planned:'2025-12-10',actual:'2026-01-22',progress:96,resp:'amit.singh@rbl.com',delayReason:'',styles:['CH-021-KHK-30','CH-021-WHT-30','CH-021-NVY-30'],qty:450},
+  {id:'CH-022',season:'SS26',cat:'CHINOS',desc:'Slim Stretch Chino Dark Khaki',vendor:'Denim Creation',stage:'Bulk Production',planned:'2026-01-21',actual:'2026-01-31',progress:78,resp:'neha.sharma@rbl.com',delayReason:'Stretch yarn elasticity variance — 3% deviation from spec — re-testing in progress at lab',styles:['CH-022-DKH-30','CH-022-DKH-32'],qty:500},
+  {id:'CH-023',season:'SS26',cat:'CHINOS',desc:'Poplin Drawstring Easy Pant',vendor:'Sparc Far East',stage:'Fit Sample',planned:'2026-01-29',actual:'2026-03-01',progress:65,resp:'amit.singh@rbl.com',delayReason:'',styles:['CH-023-WHT-S','CH-023-BLU-S','CH-023-ECR-S'],qty:550},
+  {id:'CH-024',season:'SS26',cat:'CHINOS',desc:'Pigment-Dye Cargo Short',vendor:'Denim Creation',stage:'Bulk Production',planned:'2026-03-22',actual:'2026-03-31',progress:92,resp:'neha.sharma@rbl.com',delayReason:'',styles:['CH-024-OLV-32','CH-024-TAN-32','CH-024-GRY-32'],qty:550},
+
+  // ══════════════════════════════════════════
+  // SS26 — SHACKETS EXTENDED (SH-013 to SH-018)
+  // ══════════════════════════════════════════
+  {id:'SH-013',season:'SS26',cat:'SHACKET',desc:'Indigo Sashiko Stitched Shacket',vendor:'Sparc Far East',stage:'Proto Sample',planned:'2026-01-27',actual:'2026-03-14',progress:18,resp:'amit.singh@rbl.com',delayReason:'Sashiko hand-stitch embroidery — Jaipur embroidery unit overloaded, 65-day delay vs plan',styles:['SH-013-IND-M'],qty:450},
+  {id:'SH-014',season:'SS26',cat:'SHACKET',desc:'Brushed Cotton Overshirt',vendor:'R K Industries',stage:'Bulk Production',planned:'2026-02-13',actual:'2026-02-19',progress:91,resp:'sunita.patel@rbl.com',delayReason:'',styles:['SH-014-CHK-M','SH-014-CHK-L'],qty:500},
+  {id:'SH-015',season:'SS26',cat:'SHACKET',desc:'Poplin Slim-Fit Overshirt',vendor:'Ranger Apparels',stage:'QC Inspection',planned:'2025-11-02',actual:'2025-11-09',progress:95,resp:'amit.singh@rbl.com',delayReason:'',styles:['SH-015-WHT-M','SH-015-BLU-M'],qty:450},
+  {id:'SH-016',season:'SS26',cat:'SHACKET',desc:'Heavy Twill Utility Shacket',vendor:'Sparc Far East',stage:'Fit Sample',planned:'2026-01-12',actual:'2026-02-16',progress:46,resp:'sunita.patel@rbl.com',delayReason:'Heavy twill — interning stiffness rejected twice, weight changed from 340gsm to 300gsm',styles:['SH-016-OLV-M','SH-016-KHK-M'],qty:350},
+  {id:'SH-017',season:'SS26',cat:'SHACKET',desc:'Striped Poplin Weekend Shacket',vendor:'R K Industries',stage:'Bulk Production',planned:'2026-01-30',actual:'2026-02-03',progress:89,resp:'amit.singh@rbl.com',delayReason:'',styles:['SH-017-STR-M','SH-017-STR-L'],qty:400},
+  {id:'SH-018',season:'SS26',cat:'SHACKET',desc:'Microfibre Packable Overshirt',vendor:'Sparc Far East',stage:'PP Sample',planned:'2026-02-23',actual:'2026-03-14',progress:73,resp:'sunita.patel@rbl.com',delayReason:'',styles:['SH-018-NVY-M','SH-018-BLK-M','SH-018-OLV-M'],qty:300},
+
+  // ══════════════════════════════════════════
+  // SS26 — BAGS EXTENDED (BG-013 to BG-020)
+  // ══════════════════════════════════════════
+  {id:'BG-013',season:'SS26',cat:'BAGS',desc:'Suede Zip Clutch Wallet',vendor:'R K Industries',stage:'QC Inspection',planned:'2026-03-29',actual:'2026-03-31',progress:96,resp:'rohit.verma@rbl.com',delayReason:'',styles:['BG-013-TAN','BG-013-BRN','BG-013-BLK'],qty:600},
+  {id:'BG-014',season:'SS26',cat:'BAGS',desc:'Canvas Field Backpack',vendor:'Sparc Far East',stage:'Bulk Production',planned:'2025-12-03',actual:'2025-12-22',progress:55,resp:'vikram.das@rbl.com',delayReason:'Back-panel padding spec changed post-approval — new foam sourcing from Pune vendor required',styles:['BG-014-OLV','BG-014-NVY'],qty:450},
+  {id:'BG-015',season:'SS26',cat:'BAGS',desc:'Leather Travel Wash Bag',vendor:'R K Industries',stage:'Bulk Production',planned:'2026-03-20',actual:'2026-03-31',progress:90,resp:'rohit.verma@rbl.com',delayReason:'',styles:['BG-015-BRN','BG-015-BLK'],qty:550},
+  {id:'BG-016',season:'SS26',cat:'BAGS',desc:'Waxed Canvas Tote Market Bag',vendor:'Sparc Far East',stage:'QC Inspection',planned:'2025-11-25',actual:'2026-01-18',progress:94,resp:'vikram.das@rbl.com',delayReason:'',styles:['BG-016-KHK','BG-016-NVY','BG-016-OLV'],qty:550},
+  {id:'BG-017',season:'SS26',cat:'BAGS',desc:'Saffiano Leather Zip Card Holder',vendor:'R K Industries',stage:'Bulk Production',planned:'2026-03-30',actual:'2026-03-31',progress:92,resp:'rohit.verma@rbl.com',delayReason:'',styles:['BG-017-BLK','BG-017-NVY','BG-017-BRN'],qty:500},
+  {id:'BG-018',season:'SS26',cat:'BAGS',desc:'Full-Grain Camera Bag',vendor:'Sparc Far East',stage:'Fit Sample',planned:'2025-12-07',actual:'2026-01-11',progress:35,resp:'vikram.das@rbl.com',delayReason:'Camera bag internal divider engineering — EVA foam moulding tooling delayed at Noida unit',styles:['BG-018-TAN','BG-018-BRN'],qty:650},
+  {id:'BG-019',season:'SS26',cat:'BAGS',desc:'Leather Slim Document Folio',vendor:'R K Industries',stage:'QC Inspection',planned:'2026-02-27',actual:'2026-03-05',progress:95,resp:'rohit.verma@rbl.com',delayReason:'',styles:['BG-019-BLK','BG-019-TAN'],qty:550},
+  {id:'BG-020',season:'SS26',cat:'BAGS',desc:'Cotton Canvas Print Tote',vendor:'Sparc Far East',stage:'Bulk Production',planned:'2025-11-14',actual:'2025-11-27',progress:88,resp:'vikram.das@rbl.com',delayReason:'',styles:['BG-020-WHT','BG-020-NVY'],qty:500},
+
+  // ══════════════════════════════════════════
+  // SS26 — FOOTWEAR EXTENDED (FW-015 to FW-020)
+  // ══════════════════════════════════════════
+  {id:'FW-015',season:'SS26',cat:'FOOTWEAR',desc:'Nubuck Lace-Up Derby',vendor:'R K Industries',stage:'QC Inspection',planned:'2026-03-21',actual:'2026-03-31',progress:95,resp:'rohit.verma@rbl.com',delayReason:'',styles:['FW-015-BRN-8','FW-015-BRN-9','FW-015-TAN-8'],qty:400},
+  {id:'FW-016',season:'SS26',cat:'FOOTWEAR',desc:'Woven Leather Slip-On',vendor:'Sparc Far East',stage:'Proto Sample',planned:'2026-01-09',actual:'2026-01-19',progress:22,resp:'vikram.das@rbl.com',delayReason:'Woven leather plaiting — manual weaving capacity at Agra craftsman unit severely limited, 75-day delay',styles:['FW-016-TAN-8','FW-016-BRN-8'],qty:350},
+  {id:'FW-017',season:'SS26',cat:'FOOTWEAR',desc:'Leather Venetian Loafer',vendor:'R K Industries',stage:'Bulk Production',planned:'2026-03-07',actual:'2026-03-11',progress:89,resp:'rohit.verma@rbl.com',delayReason:'',styles:['FW-017-BRN-8','FW-017-BLK-8'],qty:500},
+  {id:'FW-018',season:'SS26',cat:'FOOTWEAR',desc:'Suede Side-Zip Ankle Boot',vendor:'Sparc Far East',stage:'Fit Sample',planned:'2025-12-13',actual:'2025-12-12',progress:46,resp:'vikram.das@rbl.com',delayReason:'Side-zip placement — comfort fit rejection at buyer review, zip recessed 8mm further back',styles:['FW-018-BRN-8','FW-018-BLK-8'],qty:400},
+  {id:'FW-019',season:'SS26',cat:'FOOTWEAR',desc:'Canvas Slip-On Espadrille',vendor:'Sparc Far East',stage:'Bulk Production',planned:'2025-12-29',actual:'2026-02-13',progress:87,resp:'vikram.das@rbl.com',delayReason:'',styles:['FW-019-NVY-8','FW-019-WHT-8','FW-019-ECR-8'],qty:550},
+  {id:'FW-020',season:'SS26',cat:'FOOTWEAR',desc:'Leather Oxford Double Monk',vendor:'R K Industries',stage:'QC Inspection',planned:'2026-02-05',actual:'2026-02-14',progress:96,resp:'rohit.verma@rbl.com',delayReason:'',styles:['FW-020-BLK-8','FW-020-BRN-8'],qty:700},
+
+];
+
+const costData = [
+  // SS26 DRESS SHIRTS
+  {id:'DS-001',cat:'DRESS SHIRT',desc:'White Poplin Non-Iron',tFab:850,aFab:862,tCMT:380,aCMT:380,tTrm:120,aTrm:126,tFOB:1850,aFOB:1878},
+  {id:'DS-002',cat:'DRESS SHIRT',desc:'Blue Bengal Stripe',tFab:920,aFab:992,tCMT:400,aCMT:422,tTrm:130,aTrm:136,tFOB:1980,aFOB:2105,reason:'Yarn repurchase at spot price after mill delay'},
+  {id:'DS-003',cat:'DRESS SHIRT',desc:'Luxury Dobby Formal',tFab:980,aFab:978,tCMT:420,aCMT:418,tTrm:140,aTrm:138,tFOB:2100,aFOB:2090},
+  {id:'DS-004',cat:'DRESS SHIRT',desc:'Oxford Pinpoint Club Collar',tFab:1100,aFab:1385,tCMT:450,aCMT:452,tTrm:150,aTrm:162,tFOB:2350,aFOB:2690,reason:'Italian import fabric price surge + customs duty increase'},
+  {id:'DS-005',cat:'DRESS SHIRT',desc:'Pink Gingham Check',tFab:870,aFab:872,tCMT:385,aCMT:384,tTrm:122,aTrm:123,tFOB:1880,aFOB:1885},
+  {id:'DS-006',cat:'DRESS SHIRT',desc:'Supima Herringbone',tFab:1050,aFab:1048,tCMT:440,aCMT:440,tTrm:145,aTrm:145,tFOB:2250,aFOB:2248},
+  {id:'DS-007',cat:'DRESS SHIRT',desc:'Navy End-on-End',tFab:900,aFab:898,tCMT:395,aCMT:394,tTrm:128,aTrm:128,tFOB:1940,aFOB:1936},
+  {id:'DS-008',cat:'DRESS SHIRT',desc:'Pale Yellow Twill',tFab:880,aFab:940,tCMT:390,aCMT:410,tTrm:125,aTrm:128,tFOB:1900,aFOB:2010,reason:'Dye re-processing cost added — lot rejection at dye house'},
+  {id:'DS-009',cat:'DRESS SHIRT',desc:'White Piqué Bib Tuxedo',tFab:1200,aFab:1210,tCMT:580,aCMT:680,tTrm:180,aTrm:180,tFOB:2700,aFOB:2880,reason:'Extra sample labour cost — 2 additional proto rounds required'},
+  {id:'DS-011',cat:'DRESS SHIRT',desc:'Sea Island Cotton Luxury',tFab:2400,aFab:2850,tCMT:500,aCMT:510,tTrm:160,aTrm:165,tFOB:4200,aFOB:4720,reason:'Sea Island cotton spot procurement at 18% premium'},
+  // SS26 SPORT SHIRTS
+  {id:'SP-001',cat:'SPORT SHIRT',desc:'Linen Blend Sport Shirt',tFab:620,aFab:626,tCMT:320,aCMT:320,tTrm:80,aTrm:82,tFOB:1380,aFOB:1394},
+  {id:'SP-002',cat:'SPORT SHIRT',desc:'Madras Check',tFab:640,aFab:642,tCMT:330,aCMT:330,tTrm:82,aTrm:83,tFOB:1410,aFOB:1414},
+  {id:'SP-004',cat:'SPORT SHIRT',desc:'Camp Collar Floral Print',tFab:700,aFab:780,tCMT:360,aCMT:400,tTrm:90,aTrm:90,tFOB:1560,aFOB:1700,reason:'Print reformulation cost + additional wash testing rounds'},
+  {id:'SP-008',cat:'SPORT SHIRT',desc:'Printed Paisley Resort',tFab:680,aFab:760,tCMT:350,aCMT:380,tTrm:88,aTrm:90,tFOB:1520,aFOB:1660,reason:'Screen development cost overrun at Jaipur print house'},
+  {id:'SP-015',cat:'SPORT SHIRT',desc:'Hemp Blend Relaxed',tFab:720,aFab:820,tCMT:360,aCMT:362,tTrm:90,aTrm:92,tFOB:1580,aFOB:1700,reason:'GOTS certification audit cost added to sourcing price'},
+  {id:'SP-016',cat:'SPORT SHIRT',desc:'Silk Twill Short-Sleeve',tFab:1800,aFab:1980,tCMT:520,aCMT:530,tTrm:160,aTrm:162,tFOB:3400,aFOB:3700,reason:'Varanasi silk quality premium + re-sourcing 2 dye lots'},
+  // SS26 KNITS
+  {id:'NK-001',cat:'KNITS',desc:'Merino Wool Polo',tFab:1100,aFab:1112,tCMT:480,aCMT:485,tTrm:150,aTrm:150,tFOB:2100,aFOB:2122},
+  {id:'NK-002',cat:'KNITS',desc:'Supima Cotton Crewneck',tFab:950,aFab:962,tCMT:440,aCMT:445,tTrm:140,aTrm:142,tFOB:1960,aFOB:1984,reason:'Colour matching re-dyeing for rib component'},
+  {id:'NK-003',cat:'KNITS',desc:'Cashmere Blend V-Neck',tFab:1600,aFab:1605,tCMT:560,aCMT:560,tTrm:180,aTrm:180,tFOB:3100,aFOB:3108},
+  {id:'NK-004',cat:'KNITS',desc:'Cable Knit Luxury',tFab:1800,aFab:2210,tCMT:650,aCMT:722,tTrm:200,aTrm:202,tFOB:3500,aFOB:4108,reason:'Scottish yarn alternate source at 22% premium'},
+  {id:'NK-008',cat:'KNITS',desc:'Cotton Slub Jersey Polo',tFab:860,aFab:960,tCMT:400,aCMT:440,tTrm:120,aTrm:122,tFOB:1780,aFOB:1980,reason:'3 bulk lot rejections + yarn supplier switch at additional cost'},
+  {id:'NK-011',cat:'KNITS',desc:'Cashmere Polo Luxury',tFab:3200,aFab:3450,tCMT:800,aCMT:820,tTrm:250,aTrm:255,tFOB:6000,aFOB:6440,reason:'Mongolia grade cashmere CITES documentation cost + premium procurement'},
+  {id:'NK-013',cat:'KNITS',desc:'Intarsia Argyle V-Neck',tFab:1200,aFab:1220,tCMT:680,aCMT:820,tTrm:180,aTrm:182,tFOB:2700,aFOB:2960,reason:'Intarsia machine programming extra cost + extended knit time'},
+  {id:'NK-016',cat:'KNITS',desc:'Heritage Fair Isle Crew',tFab:1500,aFab:1520,tCMT:700,aCMT:920,tTrm:200,aTrm:202,tFOB:3100,aFOB:3440,reason:'8-colour Fair Isle production time heavily underestimated'},
+  {id:'NK-018',cat:'KNITS',desc:'Recycled Wool Blend',tFab:1100,aFab:1280,tCMT:500,aCMT:505,tTrm:160,aTrm:162,tFOB:2200,aFOB:2440,reason:'GRS certification renewal cost + premium recycled wool procurement'},
+  // SS26 CHINOS
+  {id:'CH-001',cat:'CHINOS',desc:'Stretch Garment-Dyed Chino',tFab:680,aFab:692,tCMT:420,aCMT:422,tTrm:90,aTrm:92,tFOB:1580,aFOB:1606},
+  {id:'CH-002',cat:'CHINOS',desc:'Pleated Wide-Leg Trouser',tFab:680,aFab:702,tCMT:420,aCMT:562,tTrm:90,aTrm:90,tFOB:1580,aFOB:1784,reason:'3 fit rejections + pattern block rebuild labour cost'},
+  {id:'CH-003',cat:'CHINOS',desc:'Slim 5-Pocket Pant',tFab:650,aFab:648,tCMT:410,aCMT:408,tTrm:88,aTrm:88,tFOB:1540,aFOB:1536},
+  {id:'CH-006',cat:'CHINOS',desc:'Pinstripe Tailored Trouser',tFab:1050,aFab:1280,tCMT:480,aCMT:485,tTrm:140,aTrm:145,tFOB:2200,aFOB:2470,reason:'Albini mill premium fabric — allocation surcharge added'},
+  {id:'CH-009',cat:'CHINOS',desc:'Washed Corduroy Pant',tFab:720,aFab:740,tCMT:440,aCMT:480,tTrm:95,aTrm:98,tFOB:1680,aFOB:1760,reason:'Corduroy re-cutting cost after pile direction error'},
+  {id:'CH-014',cat:'CHINOS',desc:'Japanese Selvedge Chino',tFab:1400,aFab:1620,tCMT:520,aCMT:530,tTrm:160,aTrm:165,tFOB:2800,aFOB:3090,reason:'Nisshinbo premium + customs clearance demurrage charges'},
+  {id:'CH-016',cat:'CHINOS',desc:'Double-Pleat Wool-Blend',tFab:980,aFab:1000,tCMT:520,aCMT:620,tTrm:140,aTrm:142,tFOB:2100,aFOB:2380,reason:'Re-interlining + full re-pattern cost for drape correction'},
+  // SS26 SHACKETS
+  {id:'SH-001',cat:'SHACKET',desc:'Flannel Check Shacket',tFab:760,aFab:763,tCMT:520,aCMT:521,tTrm:110,aTrm:111,tFOB:1900,aFOB:1906},
+  {id:'SH-002',cat:'SHACKET',desc:'Washed Canvas Utility',tFab:720,aFab:718,tCMT:500,aCMT:498,tTrm:105,aTrm:105,tFOB:1840,aFOB:1836},
+  {id:'SH-005',cat:'SHACKET',desc:'Corduroy Shacket Burgundy',tFab:880,aFab:1050,tCMT:540,aCMT:548,tTrm:120,aTrm:125,tFOB:2100,aFOB:2360,reason:'Italian Bergamo cord at premium alternate + airfreight'},
+  {id:'SH-009',cat:'SHACKET',desc:'Waxed Cotton Hunting Shirt',tFab:800,aFab:840,tCMT:520,aCMT:560,tTrm:112,aTrm:115,tFOB:1900,aFOB:2000,reason:'Waxed re-processing cost + Surat coating house surcharge'},
+  {id:'SH-012',cat:'SHACKET',desc:'Silk-Linen Luxury Overshirt',tFab:1900,aFab:2200,tCMT:700,aCMT:720,tTrm:200,aTrm:205,tFOB:3700,aFOB:4120,reason:'Como silk rejection + 2nd quality sourcing at 16% premium'},
+  // SS26 BAGS
+  {id:'BG-001',cat:'BAGS',desc:'Full-Grain Leather Weekender',tFab:2200,aFab:2810,tCMT:900,aCMT:952,tTrm:300,aTrm:322,tFOB:5500,aFOB:6520,reason:'Premium alternate tannery + airfreight urgency cost'},
+  {id:'BG-002',cat:'BAGS',desc:'Leather Briefcase Two-Handle',tFab:1900,aFab:1920,tCMT:850,aCMT:890,tTrm:280,aTrm:285,tFOB:4600,aFOB:4680,reason:'Handle strap rework + additional strength testing rounds'},
+  {id:'BG-007',cat:'BAGS',desc:'Saffiano Leather Zip Pouch',tFab:800,aFab:840,tCMT:400,aCMT:405,tTrm:120,aTrm:122,tFOB:1900,aFOB:1980,reason:'REACH compliance testing + certification at Chennai lab'},
+  {id:'BG-010',cat:'BAGS',desc:'Nylon Laptop Backpack',tFab:680,aFab:690,tCMT:420,aCMT:425,tTrm:180,aTrm:280,tFOB:1680,aFOB:1820,reason:'YKK custom puller premium — bespoke order MOQ surcharge'},
+  // SS26 FOOTWEAR
+  {id:'FW-001',cat:'FOOTWEAR',desc:'Leather Cap-Toe Oxford',tFab:1200,aFab:1222,tCMT:750,aCMT:762,tTrm:180,aTrm:185,tFOB:2800,aFOB:2845},
+  {id:'FW-002',cat:'FOOTWEAR',desc:'Suede Penny Loafer',tFab:1100,aFab:1112,tCMT:720,aCMT:740,tTrm:170,aTrm:172,tFOB:2650,aFOB:2692,reason:'Last adjustment + extra fitting round labour cost'},
+  {id:'FW-005',cat:'FOOTWEAR',desc:'Suede Chelsea Boot',tFab:1250,aFab:1260,tCMT:780,aCMT:880,tTrm:190,aTrm:192,tFOB:2980,aFOB:3200,reason:'3 last prototype rounds — additional lasting & lasting board cost'},
+  {id:'FW-010',cat:'FOOTWEAR',desc:'Espadrille Wedge Slip-On',tFab:680,aFab:780,tCMT:480,aCMT:495,tTrm:120,aTrm:125,tFOB:1680,aFOB:1860,reason:'Jute alternate outsole material at premium + evaluation cost'},
+  {id:'FW-013',cat:'FOOTWEAR',desc:'Suede Chukka Boot',tFab:1150,aFab:1320,tCMT:740,aCMT:760,tTrm:175,aTrm:180,tFOB:2750,aFOB:3060,reason:'Tannery switch — chrome-free compliant tannery at 15% premium'},
+  // AW25 notable
+  {id:'NK-101',cat:'KNITS',desc:'Lambswool Rollneck AW25',tFab:1400,aFab:1620,tCMT:580,aCMT:610,tTrm:180,aTrm:182,tFOB:2800,aFOB:3180,reason:'Wool procurement premium + extended finishing time cost'},
+  {id:'SH-101',cat:'SHACKET',desc:'Heavy Wool Blend Shacket AW25',tFab:1100,aFab:1115,tCMT:600,aCMT:605,tTrm:150,aTrm:155,tFOB:2500,aFOB:2560,reason:'Vessel delay — airfreight used for 50 units to meet store date'},
+  {id:'BG-101',cat:'BAGS',desc:'Leather Satchel AW25',tFab:1800,aFab:1850,tCMT:820,aCMT:860,tTrm:260,aTrm:265,tFOB:4400,aFOB:4580,reason:'Hardware replating cost after QC failure on brass finish'},
+  {id:'NK-303',cat:'KNITS',desc:'Fair Isle Polo AW24',tFab:1350,aFab:1380,tCMT:650,aCMT:830,tTrm:190,aTrm:192,tFOB:2800,aFOB:3120,reason:'Production restart cost + extended intarsia knitting time'},
+];
+
+const vendorData = [
+  { name:'Maral Overseas', type:'Knit Fabric & Garments', loc:'Bhilwara, Rajasthan', cats:['KNITS'], onTime:72, delayAvg:18, costAdh:90, quality:88, styles:8, score:'B', contact:'maral.bb@maraloverseas.com', spec:'Vertically integrated knit manufacturer' },
+  { name:'SRV Knits', type:'Knitwear Specialist', loc:'Tiruppur, Tamil Nadu', cats:['KNITS'], onTime:84, delayAvg:9, costAdh:94, quality:91, styles:12, score:'A', contact:'srvknits.pb@srvknits.in', spec:'Premium knitwear — merino, cashmere blends' },
+  { name:'Ranger Apparels', type:'Woven Garments CMT', loc:'Delhi NCR', cats:['DRESS SHIRT','SPORT SHIRT'], onTime:78, delayAvg:14, costAdh:88, quality:85, styles:32, score:'B', contact:'ranger.buying@rangerapparels.com', spec:'Shirts & woven tops specialist' },
+  { name:'Denim Creation', type:'Bottoms Manufacturer', loc:'Bengaluru, Karnataka', cats:['CHINOS'], onTime:68, delayAvg:24, costAdh:83, quality:82, styles:16, score:'C', contact:'denim.creation@denimcreation.in', spec:'Denim & chino specialist — dye finishing' },
+  { name:'R K Industries', type:'Multi-category CMT', loc:'Okhla, Delhi', cats:['DRESS SHIRT','SHACKET','FOOTWEAR','BAGS'], onTime:82, delayAvg:10, costAdh:92, quality:87, styles:28, score:'A', contact:'rk.sourcing@rkindustries.com', spec:'Diverse category capability, luxury finishing' },
+  { name:'Sparc Far East', type:'Accessories & Outerwear', loc:'Faridabad, Haryana', cats:['SPORT SHIRT','SHACKET','BAGS','FOOTWEAR'], onTime:45, delayAvg:62, costAdh:71, quality:80, styles:24, score:'D', contact:'sparc.pb@sparcfareast.com', spec:'Accessories, bags, outerwear — improving QC' },
+];
+
+// ════════════════════════════════════════════
+// UTILS
+// ════════════════════════════════════════════
+const diff = (p,a) => Math.round((new Date(a)-new Date(p))/86400000);
+const fdt = d => { if(!d) return '—'; return new Date(d).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'2-digit'}); };
+const updTNA = (p,d) => { if(d<=0) return p; const dt=new Date(p); dt.setDate(dt.getDate()+d+10); return dt.toISOString().split('T')[0]; };
+function getStatus(d) {
+  if(d>=45) return 'High Risk';
+  if(d>=1)  return 'Minor Delay';
+  if(d<0)   return 'Early';
+  return 'On Track';
+}
+function rowClass(d) {
+  if(d>=45) return 'crit';
+  if(d>=1)  return 'warn';
+  return 'good';
+}
+function badgeFor(s) {
+  const m={'High Risk':'bg-red','Minor Delay':'bg-amber','On Track':'bg-teal','Early':'bg-blue','Completed':'bg-mist'};
+  return m[s]||'bg-mist';
+}
+function pillFor(d) {
+  const v = d>0?`+${d}d`:d<0?`${d}d`:'0d';
+  const c = d>=45?'crit':d>=1?'warn':d<0?'early':'ok';
+  const ic = d>=45?'●':d>=1?'●':d<0?'▲':'●';
+  return `<span class="dpill ${c}">${ic} ${v}</span>`;
+}
+function progColor(p) { return p>=80?'var(--teal)':p>=50?'var(--gold)':'var(--rust2)'; }
+
+// ════════════════════════════════════════════
+// BUILD SIDEBAR STYLE ITEMS
+// ════════════════════════════════════════════
+function buildSidebar() {
+  const cats = [...new Set(tnaData.filter(r=>r.season===activeSeason).map(r=>r.cat))];
+  const container = document.getElementById('catSidebarItems');
+  container.innerHTML = '';
+
+  cats.forEach(cat => {
+    const catStyles = tnaData.filter(r=>r.season===activeSeason && r.cat===cat);
+    const catEl = document.createElement('div');
+
+    // category row (collapsible)
+    const catRow = document.createElement('div');
+    catRow.className = 'sb-item sb-cat-toggle';
+    catRow.innerHTML = `<span class="arrow">▶</span><span class="sb-ico">◈</span>${cat}`;
+    const delCnt = catStyles.filter(r=>diff(r.planned,r.actual)>=45).length;
+    if(delCnt>0) catRow.innerHTML += `<span class="sb-badge">${delCnt}</span>`;
+
+    // style sub-items (hidden by default)
+    const styleWrap = document.createElement('div');
+    styleWrap.style.display = 'none';
+
+    catStyles.forEach(r => {
+      const d = diff(r.planned, r.actual);
+      const dotCls = d>=45?'red':d>=1?'amber':'green';
+      const si = document.createElement('div');
+      si.className = 'sb-style-item';
+      si.dataset.styleId = r.id;
+      si.innerHTML = `<span class="sb-style-dot ${dotCls}"></span>${r.id}`;
+      si.onclick = () => {
+        document.getElementById('fStyle').value = r.id;
+        document.getElementById('fCat').value = '';
+        document.getElementById('fStatus').value = '';
+        applyFilters();
+        showTab('tna');
+        document.querySelectorAll('.sb-style-item').forEach(x=>x.classList.remove('active'));
+        si.classList.add('active');
+      };
+      styleWrap.appendChild(si);
+    });
+
+    catRow.onclick = () => {
+      const open = catRow.classList.toggle('open');
+      styleWrap.style.display = open ? 'block' : 'none';
+    };
+
+    catEl.appendChild(catRow);
+    catEl.appendChild(styleWrap);
+    container.appendChild(catEl);
+  });
+}
+
+// ════════════════════════════════════════════
+// POPULATE STYLE FILTER DROPDOWN
+// ════════════════════════════════════════════
+function buildStyleDropdown() {
+  const sel = document.getElementById('fStyle');
+  const current = sel.value;
+  sel.innerHTML = '<option value="">All Styles</option>';
+  tnaData.filter(r=>r.season===activeSeason).forEach(r => {
+    const o = document.createElement('option');
+    o.value = r.id;
+    o.textContent = `${r.id} — ${r.desc.substring(0,30)}`;
+    sel.appendChild(o);
+  });
+  sel.value = current;
+}
+
+// ════════════════════════════════════════════
+// RENDER TNA
+// ════════════════════════════════════════════
+function renderTNA(data) {
+  const tbody = document.getElementById('tnaBody');
+  tbody.innerHTML = '';
+  if(!data.length) {
+    tbody.innerHTML = `<tr><td colspan="16" style="text-align:center;padding:40px;color:rgba(232,223,208,0.3);font-family:var(--font-mono);font-size:11px">No styles match current filters</td></tr>`;
+    return;
+  }
+  data.forEach(row => {
+    const d = diff(row.planned, row.actual);
+    const status = getStatus(d);
+    const rc = rowClass(d);
+    const rmk = remarks[row.id];
+
+    const tr = document.createElement('tr');
+    tr.className = rc;
+    tr.dataset.cat = row.cat; tr.dataset.status = status;
+    tr.dataset.stage = row.stage; tr.dataset.vendor = row.vendor; tr.dataset.id = row.id;
+
+    tr.innerHTML = `
+      <td><button class="xbtn" id="xb-${row.id}" onclick="toggleStyles('${row.id}',this)">▶</button></td>
+      <td><strong style="font-family:var(--font-mono);color:var(--gold);font-size:11px">${row.id}</strong></td>
+      <td><span class="badge bg-gold">${row.cat}</span></td>
+      <td style="max-width:200px;white-space:normal;font-size:12px">${row.desc}</td>
+      <td class="dim">${row.vendor}</td>
+      <td><span class="badge bg-blue">${row.stage}</span></td>
+      <td class="dim">${fdt(row.planned)}</td>
+      <td class="dim">${fdt(row.actual)}</td>
+      <td>${pillFor(d)}</td>
+      <td><span class="badge ${badgeFor(status)}">${status}</span></td>
+      <td><div class="prog"><div class="prog-bar"><div class="prog-fill" style="width:${row.progress}%;background:${progColor(row.progress)}"></div></div><div class="prog-lbl">${row.progress}%</div></div></td>
+      <td style="font-family:var(--font-mono);font-size:11px;color:var(--gold);text-align:right">${(row.qty||0).toLocaleString()}</td><td style="max-width:200px;white-space:normal;font-size:10px;color:rgba(232,223,208,0.4)">${row.delayReason||'—'}</td>
+      <td class="dim" style="font-size:10px">${row.resp}</td>
+      <td class="dim">${d>0?`<span style="color:var(--amber)">${fdt(updTNA(row.planned,d))}</span>`:fdt(row.planned)}</td>
+      <td><button class="rbtn ${rmk?'has':''}" onclick="openRemark('${row.id}')">${rmk?'📌 View':'+ Add'}</button></td>
+      <td>
+        <label class="img-upload-btn" title="Upload image for ${row.id}">
+          ${styleImages[row.id]
+            ? `<img src="${styleImages[row.id]}" class="thumb-img" onclick="openImageModal('${row.id}',event)" title="Click to view">`
+            : `<span class="img-placeholder" onclick="document.getElementById('img-input-${row.id}').click()">📷</span>`
+          }
+          <input type="file" id="img-input-${row.id}" accept="image/*" style="display:none" onchange="handleImageUpload('${row.id}',this)">
+        </label>
+      </td>
+    `;
+    tbody.appendChild(tr);
+
+    // style sub-rows
+    row.styles.forEach(s => {
+      const sub = document.createElement('tr');
+      sub.className = 'style-sub hidden';
+      sub.id = `ss-${row.id}`;
+      sub.innerHTML = `
+        <td colspan="2">↳ ${s}</td>
+        <td colspan="2" style="color:rgba(232,223,208,0.3)">Variant</td>
+        <td class="dim">${row.vendor}</td>
+        <td><span class="badge bg-mist" style="font-size:8px">${row.stage}</span></td>
+        <td class="dim">${fdt(row.planned)}</td>
+        <td class="dim">${fdt(row.actual)}</td>
+        <td colspan="7"></td>
+      `;
+      tbody.appendChild(sub);
+    });
+  });
+
+  buildKPIs(data);
+  buildAlerts(data);
+  buildSidebar();
+  buildStyleDropdown();
+}
+
+function toggleStyles(id, btn) {
+  const rows = document.querySelectorAll(`#ss-${id}`);
+  const open = btn.classList.toggle('open');
+  rows.forEach(r => r.classList.toggle('hidden', !open));
+}
+
+// ════════════════════════════════════════════
+// KPIs
+// ════════════════════════════════════════════
+function buildKPIs(data) {
+  const crit = data.filter(r=>diff(r.planned,r.actual)>=45).length;
+  const risk = data.filter(r=>{const d=diff(r.planned,r.actual);return d>=1&&d<45;}).length;
+  const ontrack = data.filter(r=>diff(r.planned,r.actual)<=0).length;
+  const avgD = data.length ? Math.round(data.reduce((a,r)=>a+Math.max(0,diff(r.planned,r.actual)),0)/data.length) : 0;
+  const kpis = [
+    { l:'Total Styles', v:data.length, s:'in '+activeSeason, cls:'gold' },
+    { l:'On Track', v:ontrack, s:`${Math.round(ontrack/Math.max(data.length,1)*100)}% of portfolio`, cls:'teal' },
+    { l:'Minor Delay', v:risk, s:'1 – 44 days delayed', cls:'amber' },
+    { l:'High Risk', v:crit, s:'≥ 45 days — red alert', cls:'red' },
+    { l:'Avg Delay', v:avgD+'d', s:'across portfolio', cls:avgD>30?'red':avgD>10?'amber':'teal' },
+    { l:'Launch Target', v:'Jan 26', s:'Retail floor date SS26', cls:'gold' },
+    { l:'Total Quantity', v:data.reduce((s,r)=>s+(r.qty||0),0).toLocaleString('en-IN'), s:`Units across ${data.length} styles`, cls:'teal' },
+  ];
+  document.getElementById('kpiRow').innerHTML = kpis.map(k=>
+    `<div class="kpi ${k.cls}">
+      <div class="kpi-l">${k.l}</div>
+      <div class="kpi-v">${k.v}</div>
+      <div class="kpi-s">${k.s}</div>
+    </div>`
+  ).join('');
+  document.getElementById('countCrit').textContent = crit;
+  document.getElementById('countWarn').textContent = risk;
+}
+
+// ════════════════════════════════════════════
+// ALERTS
+// ════════════════════════════════════════════
+function buildAlerts(data) {
+  const crits = data.filter(r=>diff(r.planned,r.actual)>=45);
+  if(crits.length) {
+    document.getElementById('alertMsg').textContent =
+      `🔴 HIGH RISK — ${crits.length} style${crits.length>1?'s':''} delayed 45+ days — `+crits.map(r=>`${r.id} (${r.cat})`).join(', ')+' — Auto-alerts dispatched to sourcing team';
+    document.getElementById('alertStrip').style.display = 'flex';
+    crits.forEach(r => {
+      const d = diff(r.planned, r.actual);
+      const entry = `[AUTO] ${new Date().toLocaleString('en-IN')} → To: ${r.resp} | Style: ${r.id} | Stage: ${r.stage} | Delay: +${d} days | ${r.delayReason||'Reason: TBD'}`;
+      if(!emailLog.find(e=>e.includes(r.id))) emailLog.push(entry);
+    });
+  } else {
+    document.getElementById('alertStrip').style.display = 'none';
+  }
+}
+
+// ════════════════════════════════════════════
+// FILTERS
+// ════════════════════════════════════════════
+function applyFilters() {
+  const cat = document.getElementById('fCat').value;
+  const style = document.getElementById('fStyle').value;
+  const status = document.getElementById('fStatus').value;
+  const stage = document.getElementById('fStage').value;
+  const vendor = document.getElementById('fVendor').value;
+  const search = document.getElementById('fSearch').value.toUpperCase();
+
+  const filtered = tnaData.filter(r => {
+    const d = diff(r.planned, r.actual);
+    const st = getStatus(d);
+    return r.season === activeSeason &&
+      (!cat || r.cat === cat) &&
+      (!style || r.id === style) &&
+      (!status || st === status) &&
+      (!stage || r.stage === stage) &&
+      (!vendor || r.vendor === vendor) &&
+      (!search || r.id.includes(search) || r.desc.toUpperCase().includes(search));
+  });
+  renderTNA(filtered);
+}
+
+function sidebarCat(cat, el) {
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('fCat').value = cat==='ALL'?'':cat;
+  document.getElementById('fStyle').value = '';
+  applyFilters();
+  showTab('tna');
+}
+function sidebarStatus(s, el) {
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('fStatus').value = s;
+  applyFilters();
+  showTab('tna');
+}
+
+// ════════════════════════════════════════════
+// TABS
+// ════════════════════════════════════════════
+function showTab(name) {
+  ['tna','vendor','cost','pert','sourcing'].forEach(t=>{
+    document.getElementById(`view-${t}`).classList.add('hidden');
+    document.getElementById(`nt-${t}`)?.classList.remove('active');
+  });
+  document.getElementById(`view-${name}`).classList.remove('hidden');
+  document.getElementById(`nt-${name}`)?.classList.add('active');
+  if(name==='vendor') renderVendors();
+  if(name==='cost') renderCosts();
+  if(name==='pert') drawPert('pertFull',1060,400);
+  if(name==='sourcing') renderSourcing();
+}
+
+// ════════════════════════════════════════════
+// REMARKS
+// ════════════════════════════════════════════
+function openRemark(id) {
+  document.getElementById('rmkId').value = id;
+  document.getElementById('rmkStyleDisp').textContent = id;
+  const r = remarks[id]||{};
+  document.getElementById('rmkText').value = r.text||'';
+  document.getElementById('rmkAction').value = r.action||'';
+  document.getElementById('rmkResp').value = r.resp||'';
+  document.getElementById('rmkDate').value = r.date||'';
+  document.getElementById('rmkPri').value = r.pri||'High';
+  document.getElementById('remarkModal').classList.add('open');
+}
+function saveRemark() {
+  const id = document.getElementById('rmkId').value;
+  remarks[id] = {
+    text: document.getElementById('rmkText').value,
+    action: document.getElementById('rmkAction').value,
+    resp: document.getElementById('rmkResp').value,
+    date: document.getElementById('rmkDate').value,
+    pri: document.getElementById('rmkPri').value,
+  };
+  closeModal('remarkModal');
+  applyFilters();
+  toast(`📌 Remark saved for ${id}`);
+}
+
+// ════════════════════════════════════════════
+// EMAIL
+// ════════════════════════════════════════════
+function openEmailModal() {
+  const container = document.getElementById('elogContainer');
+  container.innerHTML = emailLog.length
+    ? emailLog.map(e=>`<div class="elog-entry"><span class="hl">✉</span> ${e}</div>`).join('')
+    : `<div class="elog-entry" style="color:rgba(232,223,208,0.25)">No auto-alerts triggered for current filters. Delays ≥45 days trigger automatic alerts.</div>`;
+  document.getElementById('emailModal').classList.add('open');
+}
+function sendManualAlert() {
+  const email = document.getElementById('manEmail').value;
+  const style = document.getElementById('manStyle').value;
+  const msg = document.getElementById('manMsg').value;
+  if(!email) { toast('Please enter an email address','err'); return; }
+  emailLog.push(`[MANUAL] ${new Date().toLocaleString('en-IN')} → To: ${email} | Style: ${style||'N/A'} | Message: ${msg||'Manual delay alert'}`);
+  closeModal('emailModal');
+  toast(`📧 Alert dispatched to ${email}`);
+}
+
+// ════════════════════════════════════════════
+// ADD STYLE
+// ════════════════════════════════════════════
+function openAddModal() {
+  document.getElementById('addSeasonDisp').textContent = activeSeason;
+  document.getElementById('nId').value = '';
+  document.getElementById('nQty').value = '';
+  document.getElementById('nDesc').value = '';
+  document.getElementById('nReason').value = '';
+  document.getElementById('nResp').value = '';
+  document.getElementById('nStyles').value = '';
+  document.getElementById('addModal').classList.add('open');
+}
+
+async function refreshFromSheets() {
+  if (syncStatus !== 'live' && syncStatus !== 'error') {
+    toast('⚠️ Not connected to Google Sheets', 'warn');
+  }
+  setSyncBadge('loading');
+  const liveData = await gasRead();
+  if (liveData && liveData.length > 0) {
+    tnaData = liveData;
+    setSyncBadge('live');
+    buildSeasons();
+    applyFilters();
+    toast('✅ Refreshed — ' + liveData.length + ' styles loaded from Sheets');
+  } else {
+    setSyncBadge('error');
+    toast('✕ Could not reach Google Sheets', 'err');
+  }
+}
+
+async function addStyle() {
+  const id = document.getElementById('nId').value.trim();
+  if(!id) { toast('Style # is required','err'); return; }
+  const stylesRaw = document.getElementById('nStyles').value;
+  const newRow = {
+    id, season:activeSeason,
+    cat: document.getElementById('nCat').value,
+    desc: document.getElementById('nDesc').value,
+    vendor: document.getElementById('nVendor').value,
+    stage: document.getElementById('nStage').value,
+    planned: document.getElementById('nPlanned').value,
+    actual: document.getElementById('nActual').value,
+    qty: parseInt(document.getElementById('nQty').value) || 0,
+    progress:0,
+    resp: document.getElementById('nResp').value||'sourcing@rbl.com',
+    delayReason: document.getElementById('nReason').value,
+    styles: stylesRaw ? stylesRaw.split(',').map(s=>s.trim()) : [id+'-TBD'],
+  };
+  tnaData.push(newRow);
+  closeModal('addModal');
+  applyFilters();
+  toast(`✅ Style ${id} added`);
+  if (syncStatus === 'live') {
+    await gasWrite(newRow);
+    toast(`☁️ Style ${id} saved to Google Sheets`);
+  }
+}
+
+// ════════════════════════════════════════════
+// VENDORS
+// ════════════════════════════════════════════
+function renderVendors() {
+  document.getElementById('vendorGrid').innerHTML = vendorData.map(v => `
+    <div class="vcard">
+      <div class="vscore vs-${v.score.toLowerCase()}">${v.score}</div>
+      <div class="vcard-name">${v.name}</div>
+      <div class="vcard-meta">${v.type} · ${v.loc}</div>
+      <div class="vcard-stat"><span class="vcard-stat-l">Specialisation</span><span class="vcard-stat-v" style="font-size:10px">${v.spec}</span></div>
+      <div class="vcard-stat"><span class="vcard-stat-l">Categories</span><span class="vcard-stat-v" style="font-size:10px">${v.cats.join(', ')}</span></div>
+      <div class="vcard-stat"><span class="vcard-stat-l">On-Time Delivery</span><span class="vcard-stat-v" style="color:${v.onTime>=80?'#2dd4bf':v.onTime>=65?'var(--gold)':'#f87171'}">${v.onTime}%</span></div>
+      <div class="vcard-stat"><span class="vcard-stat-l">Avg Delay</span><span class="vcard-stat-v" style="color:${v.delayAvg<=10?'#2dd4bf':v.delayAvg<=25?'var(--gold)':'#f87171'}">${v.delayAvg} days</span></div>
+      <div class="vcard-stat"><span class="vcard-stat-l">Cost Adherence</span><span class="vcard-stat-v">${v.costAdh}%</span></div>
+      <div class="vcard-stat"><span class="vcard-stat-l">Quality Score</span><span class="vcard-stat-v">${v.quality}/100</span></div>
+      <div class="vcard-stat"><span class="vcard-stat-l">Active Styles</span><span class="vcard-stat-v">${v.styles}</span></div>
+      <div class="vcard-stat"><span class="vcard-stat-l">Contact</span><span class="vcard-stat-v" style="font-size:9px;opacity:0.7">${v.contact}</span></div>
+    </div>
+  `).join('');
+}
+
+// ════════════════════════════════════════════
+// COST
+// ════════════════════════════════════════════
+function renderCosts() {
+  document.getElementById('costBody').innerHTML = costData.map(c => {
+    const dv = c.aFOB - c.tFOB;
+    const pct = ((dv/c.tFOB)*100).toFixed(1);
+    const cls = dv>200?'cost-pos':dv<-100?'cost-neg':'cost-neutral';
+    const sign = dv>0?'+':'';
+    return `<tr>
+      <td style="font-family:var(--font-mono);color:var(--gold);font-size:11px">${c.id}</td>
+      <td><span class="badge bg-gold" style="font-size:8px">${c.cat}</span></td>
+      <td style="font-size:11px;max-width:160px;white-space:normal">${c.desc}</td>
+      <td class="dim">₹${c.tFab}</td>
+      <td style="font-family:var(--font-mono);font-size:11px;color:${c.aFab>c.tFab?'#fbbf24':'#2dd4bf'}">₹${c.aFab}</td>
+      <td class="dim">₹${c.tCMT}</td>
+      <td style="font-family:var(--font-mono);font-size:11px;color:${c.aCMT>c.tCMT?'#fbbf24':'#2dd4bf'}">₹${c.aCMT}</td>
+      <td class="dim">₹${c.tTrm}</td>
+      <td style="font-family:var(--font-mono);font-size:11px;color:${c.aTrm>c.tTrm?'#fbbf24':'#2dd4bf'}">₹${c.aTrm}</td>
+      <td style="font-family:var(--font-mono);font-size:12px;font-weight:500">₹${c.tFOB}</td>
+      <td style="font-family:var(--font-mono);font-size:12px;font-weight:500;color:${dv>200?'#f87171':dv<-100?'#2dd4bf':'var(--sand)'}">₹${c.aFOB}</td>
+      <td class="${cls}">${sign}₹${Math.abs(dv)} <span style="opacity:0.6">(${sign}${pct}%)</span></td>
+      <td style="font-size:10px;color:rgba(232,223,208,0.4);max-width:180px;white-space:normal">${c.reason||'Within budget'}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════════
+// PERT
+// ════════════════════════════════════════════
+const pNodes = [
+  {id:0,x:55,y:200,l:'START',s:'Wk 0',c:false},
+  {id:1,x:180,y:100,l:'DESIGN\nAPPROV',s:'Wk 1–2',c:true},
+  {id:2,x:180,y:300,l:'RANGE\nPLAN',s:'Wk 1–2',c:false},
+  {id:3,x:320,y:100,l:'FABRIC\nSOURCING',s:'Wk 3–6',c:true},
+  {id:4,x:320,y:300,l:'TRIM\nSOURCING',s:'Wk 3–5',c:false},
+  {id:5,x:460,y:200,l:'PROTO\nSAMPLE',s:'Wk 7–9',c:true},
+  {id:6,x:590,y:100,l:'FIT\nSAMPLE',s:'Wk 10–12',c:true},
+  {id:7,x:590,y:300,l:'SS\nSAMPLE',s:'Wk 10–12',c:false},
+  {id:8,x:720,y:100,l:'PP\nSAMPLE',s:'Wk 13–14',c:true},
+  {id:9,x:720,y:300,l:'COST\nNEGO',s:'Wk 13',c:false},
+  {id:10,x:850,y:200,l:'BULK\nPROD',s:'Wk 15–20',c:true},
+  {id:11,x:970,y:100,l:'QC\nINSPECT',s:'Wk 21–22',c:true},
+  {id:12,x:970,y:300,l:'PACKING',s:'Wk 21–22',c:false},
+  {id:13,x:1070,y:200,l:'SHIP\nLAUNCH',s:'Wk 23',c:true},
+];
+const pEdges = [
+  [0,1,true,'2w'],[0,2,false,'2w'],[1,3,true,'4w'],[2,4,false,'2w'],
+  [3,5,true,'3w'],[4,5,false,'2w'],[5,6,true,'3w'],[5,7,false,'3w'],
+  [6,8,true,'2w'],[7,9,false,'1w'],[8,10,true,'6w'],[9,10,false,'2w'],
+  [10,11,true,'2w'],[10,12,false,'2w'],[11,13,true,'1w'],[12,13,false,'1w'],
+];
+
+function drawPert(svgId, W, H) {
+  const svg = document.getElementById(svgId);
+  if(!svg) return;
+  const maxX = 1110, maxY = 380;
+  const sx = (W-10)/maxX, sy = (H-20)/maxY;
+
+  let defs = `<defs>
+    <marker id="ac" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="${getComputedStyle(document.documentElement).getPropertyValue('--rust2')||'#e05535'}"/>
+    </marker>
+    <marker id="an" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="rgba(200,169,110,0.5)"/>
+    </marker>
+  </defs>`;
+
+  let edges = '', nodes = '';
+
+  pEdges.forEach(([f,t,crit,dur]) => {
+    const n1 = pNodes[f], n2 = pNodes[t];
+    const x1=n1.x*sx, y1=n1.y*sy, x2=n2.x*sx, y2=n2.y*sy;
+    const mx=(x1+x2)/2, my=(y1+y2)/2;
+    edges += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"
+      class="${crit?'pert-edge-c':'pert-edge-n'}"
+      marker-end="url(#${crit?'ac':'an'})" stroke-width="${crit?'1.8':'1.2'}"/>
+      <text x="${mx}" y="${my-5}" text-anchor="middle" class="pert-dur">${dur}</text>`;
+  });
+
+  pNodes.forEach(n => {
+    const nx=n.x*sx, ny=n.y*sy, r=26;
+    nodes += `<circle cx="${nx}" cy="${ny}" r="${r}" class="${n.c?'pert-node-c':'pert-node-n'}"/>`;
+    const lines = n.l.split('\n');
+    const startY = ny - (lines.length-1)*6;
+    lines.forEach((line,i) => {
+      nodes += `<text x="${nx}" y="${startY+i*12}" text-anchor="middle" class="pert-text">${line}</text>`;
+    });
+    nodes += `<text x="${nx}" y="${ny+20}" text-anchor="middle" class="pert-sub-text">${n.s}</text>`;
+  });
+
+  svg.innerHTML = defs + edges + nodes;
+}
+
+// ════════════════════════════════════════════
+// SOURCING
+// ════════════════════════════════════════════
+function renderSourcing() {
+  const depts = [
+    {t:'Design &\nMerchandising', s:['Range plan','Trend direction','Design brief','Style selection','Buyer presentation']},
+    {t:'Fabric\nSourcing', s:['Mill identification','Fabric development','Lab dip approval','Bulk fabric order','AATCC/IS testing']},
+    {t:'Trim &\nAccessory', s:['Label / hangtag art','Button / zip spec','Thread matching','Brand packaging','Trim card approval']},
+    {t:'Technical\nDesign', s:['Pattern making','Grade rules','Measurement specs','Construction tech pack','Size set approval']},
+    {t:'Sampling', s:['Proto sample','Fit sample','Salesman sample','PP sample','Shoot samples']},
+    {t:'Costing', s:['Initial FOB estimate','Fabric cost sheet','CMT negotiation','Duty / freight','Final cost approval']},
+    {t:'Quality /\nCompliance', s:['Inline QC','Final AQL inspection','Lab testing (BIS)','SMETA / BSCI audit','Rejection report']},
+    {t:'Logistics', s:['Shipping instruction','Packing list','Customs docs HS code','Insurance','Clearance + delivery']},
+  ];
+
+  document.getElementById('sourcingContent').innerHTML = `
+    <div class="dept-flow-wrap">
+      <div class="dept-flow">
+        ${depts.map(d=>`
+          <div class="dept-node">
+            <div class="dept-node-t">${d.t.replace('\n','<br>')}</div>
+            <div class="dept-node-s">${d.s.map(s=>`• ${s}`).join('<br>')}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <div style="margin-top:32px">
+      <div style="font-family:var(--font-display);font-size:22px;font-weight:300;color:var(--sand2);margin-bottom:18px">Key Departments — India Luxury Manufacturing</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px">
+        ${[
+          {d:'Buying & Merchandising',r:'Range building · OTB planning · Vendor allocation · TNA ownership · Buyer coordination · WIP meetings',h:'Merchandising Manager'},
+          {d:'Fabric Development',r:'Mill liaison · Fabric spec creation · Physical testing · Lab dip sign-off · Bulk approval · Luxury hand-feel QC',h:'Fabric Sourcing Manager'},
+          {d:'Technical Design',r:'Pattern making · Grading · Measurement specs · Fit approval · Garment construction tech pack creation',h:'Sr. Technical Designer'},
+          {d:'Costing & Finance',r:'FOB estimation · CMT negotiation · BOM costing · Variance reporting · Invoice approval · Audit trail',h:'Costing Manager'},
+          {d:'Quality Control',r:'Inline audit · AQL inspection · Lab testing (colorfastness, tensile, dimensional stability) · Defect classification',h:'QC Manager — India'},
+          {d:'Compliance & CSR',r:'SMETA audit · BSCI · SA8000 · Fire safety · REACH chemical compliance · Restricted substance list',h:'Compliance Manager'},
+          {d:'Logistics & Exports',r:'Freight forwarding · Customs documentation · HS code classification · Insurance · Delivery coordination',h:'Logistics Coordinator'},
+          {d:'Visual Merchandising',r:'Store fixture planning · Product launch support · Planogram · Product photography brief · Seasonal VM',h:'VM Manager'},
+        ].map(x=>`
+          <div style="background:var(--ink2);border:1px solid var(--border2);padding:18px;transition:border-color 0.2s" onmouseenter="this.style.borderColor='var(--border)'" onmouseleave="this.style.borderColor='var(--border2)'">
+            <div style="font-family:var(--font-display);font-size:16px;font-weight:400;color:var(--sand2);margin-bottom:3px">${x.d}</div>
+            <div style="font-family:var(--font-mono);font-size:9px;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px">${x.h}</div>
+            <div style="font-size:11px;color:rgba(232,223,208,0.45);line-height:1.8">${x.r}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+// ════════════════════════════════════════════
+// EXPORT
+// ════════════════════════════════════════════
+function exportCSV() {
+  const data = tnaData.filter(r=>r.season===activeSeason);
+  const rows = [['Season','Style','Category','Description','Vendor','Stage','Planned','Actual','Delay Days','Status','Progress','Delay Reason','Updated TNA','Responsibility']];
+  data.forEach(r => {
+    const d = diff(r.planned, r.actual);
+    rows.push([r.season,r.id,r.cat,r.desc,r.vendor,r.stage,r.planned,r.actual,d,getStatus(d),r.progress+'%',r.delayReason,updTNA(r.planned,d),r.resp]);
+  });
+  const csv = rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download = `BrooksBrothers_TNA_${activeSeason}.csv`;
+  a.click();
+  toast(`↓ Exported TNA for ${activeSeason}`);
+}
+
+// ════════════════════════════════════════════
+// MODAL / TOAST
+// ════════════════════════════════════════════
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+let toastTimer;
+function toast(msg, type='') {
+  const el = document.getElementById('toastEl');
+  el.textContent = msg;
+  el.className = `toast${type==='err'?' err':''}`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>el.className='toast hidden', 4000);
+}
+
+// ════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════
+window.onload = async () => {
+  buildSeasons();
+  setSyncBadge('loading');
+  applyFilters();
+  drawPert('pertInline', 1060, 300);
+
+  // Try to load live data from Google Sheets
+  const liveData = await gasRead();
+  if (liveData && liveData.length > 0) {
+    tnaData = liveData;
+    setSyncBadge('live');
+    buildSeasons();
+    applyFilters();
+    toast('✅ Live data loaded from Google Sheets — ' + liveData.length + ' styles', 'ok');
+  } else {
+    setSyncBadge('error');
+    toast('⚠️ Could not reach Google Sheets — showing local data', 'warn');
+  }
+
+  setTimeout(()=>{
+    const crits = tnaData.filter(r=>r.season===activeSeason&&diff(r.planned,r.actual)>=45);
+    if(crits.length) toast(`🔴 ALARM: ${crits.length} styles at critical delay — ${crits.map(c=>c.id).join(', ')}`, 'err');
+  }, 1500);
+};
+
+// ════════════════════════════════════════════
+// QTY BREAKDOWN
+// ════════════════════════════════════════════
+function renderQty() {
+  const data = tnaData.filter(r => r.season === activeSeason);
+  const el = document.getElementById('qtyContent');
+
+  // Compute breakdowns
+  const catMap = {}, vendorMap = {}, styleRows = [];
+  let grandTotal = 0;
+
+  data.forEach(r => {
+    const q = r.qty || 0;
+    grandTotal += q;
+    catMap[r.cat] = (catMap[r.cat] || 0) + q;
+    vendorMap[r.vendor] = (vendorMap[r.vendor] || 0) + q;
+    styleRows.push(r);
+  });
+
+  const CAT_COLORS = {
+    'DRESS SHIRT':'#1A2F55','SPORT SHIRT':'#0D4F4F','KNITS':'#2D1B69',
+    'CHINOS':'#3D2B00','SHACKET':'#1A3A1A','BAGS':'#4A1010','FOOTWEAR':'#1A1A4A'
+  };
+
+  const fmtN = n => n.toLocaleString('en-IN');
+  const pct  = (n, t) => ((n/t)*100).toFixed(1) + '%';
+  const barW = (n, t) => Math.round((n/t)*100);
+
+  // ── Summary KPI strip
+  let html = `
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;">
+      <div class="kpi gold" style="grid-column:span 1">
+        <div class="kpi-l">Grand Total</div>
+        <div class="kpi-v">${fmtN(grandTotal)}</div>
+        <div class="kpi-s">Units · SS26</div>
+      </div>
+      <div class="kpi teal">
+        <div class="kpi-l">Total Styles</div>
+        <div class="kpi-v">${data.length}</div>
+        <div class="kpi-s">Across ${Object.keys(catMap).length} categories</div>
+      </div>
+      <div class="kpi amber">
+        <div class="kpi-l">Avg per Style</div>
+        <div class="kpi-v">${fmtN(Math.round(grandTotal/data.length))}</div>
+        <div class="kpi-s">Units per style</div>
+      </div>
+      <div class="kpi teal">
+        <div class="kpi-l">Vendors</div>
+        <div class="kpi-v">${Object.keys(vendorMap).length}</div>
+        <div class="kpi-s">Production partners</div>
+      </div>
+    </div>`;
+
+  // ── Category Breakdown
+  const catEntries = Object.entries(catMap).sort((a,b)=>b[1]-a[1]);
+  html += `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px;">
+
+    <!-- Category -->
+    <div style="background:var(--ink2);border:1px solid var(--border2);padding:20px;">
+      <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;border-bottom:1px solid var(--border2);padding-bottom:10px;">
+        Category Wise Quantity
+      </div>`;
+
+  catEntries.forEach(([cat, qty]) => {
+    const bw = barW(qty, grandTotal);
+    const color = CAT_COLORS[cat] || '#1A2F55';
+    html += `
+      <div style="margin-bottom:14px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+          <span style="font-size:11px;color:var(--sand2);font-weight:500;">${cat}</span>
+          <span style="font-family:var(--font-mono);font-size:10px;color:var(--gold);">${fmtN(qty)} <span style="color:rgba(200,169,110,0.5);font-size:9px;">(${pct(qty,grandTotal)})</span></span>
+        </div>
+        <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:1px;">
+          <div style="height:100%;width:${bw}%;background:var(--gold);border-radius:1px;transition:width 0.6s ease;opacity:0.85;"></div>
+        </div>
+        <div style="font-family:var(--font-mono);font-size:8px;color:rgba(232,223,208,0.35);margin-top:3px;">${catMap2StyleCount(cat, data)} styles · avg ${fmtN(Math.round(qty/catMap2StyleCount(cat,data)))} units/style</div>
+      </div>`;
+  });
+
+  html += `</div>
+
+    <!-- Vendor -->
+    <div style="background:var(--ink2);border:1px solid var(--border2);padding:20px;">
+      <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;border-bottom:1px solid var(--border2);padding-bottom:10px;">
+        Vendor Wise Quantity
+      </div>`;
+
+  Object.entries(vendorMap).sort((a,b)=>b[1]-a[1]).forEach(([v, qty]) => {
+    const bw = barW(qty, grandTotal);
+    const vStyles = data.filter(r=>r.vendor===v).length;
+    html += `
+      <div style="margin-bottom:14px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+          <span style="font-size:11px;color:var(--sand2);font-weight:500;">${v}</span>
+          <span style="font-family:var(--font-mono);font-size:10px;color:var(--gold);">${fmtN(qty)} <span style="color:rgba(200,169,110,0.5);font-size:9px;">(${pct(qty,grandTotal)})</span></span>
+        </div>
+        <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:1px;">
+          <div style="height:100%;width:${bw}%;background:#1A6B6B;border-radius:1px;transition:width 0.6s ease;opacity:0.85;"></div>
+        </div>
+        <div style="font-family:var(--font-mono);font-size:8px;color:rgba(232,223,208,0.35);margin-top:3px;">${vStyles} styles · avg ${fmtN(Math.round(qty/vStyles))} units/style</div>
+      </div>`;
+  });
+
+  html += `</div></div>`;
+
+  // ── Style-wise table with search
+  html += `
+    <div style="background:var(--ink2);border:1px solid var(--border2);padding:20px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid var(--border2);padding-bottom:12px;">
+        <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;">Style Wise Quantity — All ${data.length} Styles</span>
+        <input id="qtySearch" type="text" placeholder="Search style / category..." oninput="filterQtyTable()" style="background:rgba(0,0,0,0.4);border:1px solid var(--border2);color:var(--sand);padding:6px 12px;font-size:11px;font-family:var(--font-mono);width:240px;outline:none;" />
+      </div>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;" id="qtyTable">
+          <thead>
+            <tr style="background:#0A1628;">
+              <th style="padding:8px 12px;text-align:left;font-family:var(--font-mono);font-size:8px;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase;border-bottom:1px solid var(--border2);">Style #</th>
+              <th style="padding:8px 12px;text-align:left;font-family:var(--font-mono);font-size:8px;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase;border-bottom:1px solid var(--border2);">Category</th>
+              <th style="padding:8px 12px;text-align:left;font-family:var(--font-mono);font-size:8px;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase;border-bottom:1px solid var(--border2);">Description</th>
+              <th style="padding:8px 12px;text-align:left;font-family:var(--font-mono);font-size:8px;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase;border-bottom:1px solid var(--border2);">Vendor</th>
+              <th style="padding:8px 12px;text-align:right;font-family:var(--font-mono);font-size:8px;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase;border-bottom:1px solid var(--border2);">Quantity</th>
+              <th style="padding:8px 12px;text-align:right;font-family:var(--font-mono);font-size:8px;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase;border-bottom:1px solid var(--border2);">% of Total</th>
+              <th style="padding:8px 12px;text-align:left;font-family:var(--font-mono);font-size:8px;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase;border-bottom:1px solid var(--border2);">Status</th>
+            </tr>
+          </thead>
+          <tbody id="qtyTableBody">`;
+
+  const statusColors = {'High Risk':'#C0402A','Minor Delay':'#D97706','On Track':'#0D9488','Early':'#3B82F6'};
+  const statusBg = {'High Risk':'rgba(192,64,42,0.1)','Minor Delay':'rgba(217,119,6,0.1)','On Track':'rgba(13,148,136,0.08)','Early':'rgba(59,130,246,0.08)'};
+
+  styleRows.sort((a,b) => (b.qty||0)-(a.qty||0)).forEach((r, i) => {
+    const qty = r.qty || 0;
+    const st = getStatus(r);
+    const rowBg = i%2===0 ? 'rgba(255,255,255,0.02)' : 'transparent';
+    html += `
+            <tr style="background:${rowBg};border-bottom:1px solid rgba(255,255,255,0.04);" class="qty-row">
+              <td style="padding:7px 12px;font-family:var(--font-mono);font-size:9px;color:var(--gold);">${r.id}</td>
+              <td style="padding:7px 12px;font-size:10px;color:rgba(232,223,208,0.6);">${r.cat}</td>
+              <td style="padding:7px 12px;font-size:10px;color:var(--sand2);max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.desc}</td>
+              <td style="padding:7px 12px;font-size:10px;color:rgba(232,223,208,0.6);">${r.vendor}</td>
+              <td style="padding:7px 12px;font-family:var(--font-mono);font-size:10px;color:var(--sand2);text-align:right;font-weight:600;">${fmtN(qty)}</td>
+              <td style="padding:7px 12px;font-family:var(--font-mono);font-size:9px;color:rgba(200,169,110,0.6);text-align:right;">${pct(qty,grandTotal)}</td>
+              <td style="padding:7px 12px;">
+                <span style="font-family:var(--font-mono);font-size:8px;padding:2px 8px;background:${statusBg[st]||'transparent'};color:${statusColors[st]||'#888'};border:1px solid ${statusColors[st]||'#444'}22;">${st}</span>
+              </td>
+            </tr>`;
+  });
+
+  html += `
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+
+  el.innerHTML = html;
+}
+
+function catMap2StyleCount(cat, data) {
+  return data.filter(r => r.cat === cat).length;
+}
+
+function filterQtyTable() {
+  const q = document.getElementById('qtySearch').value.toLowerCase();
+  document.querySelectorAll('.qty-row').forEach(row => {
+    row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+// ════════════════════════════════════════════
+// QTY BREAKDOWN
+// ════════════════════════════════════════════
+function renderQty() {
+  const catFilter = document.getElementById('qtyCatFilter')?.value || 'ALL';
+  const vendFilter = document.getElementById('qtyVendorFilter')?.value || 'ALL';
+  const data = tnaData.filter(r => r.season === 'SS26'
+    && (catFilter === 'ALL' || r.cat === catFilter)
+    && (vendFilter === 'ALL' || r.vendor === vendFilter));
+  const total = 95000;
+
+  // ── Category table ──────────────────────
+  const catMap = {};
+  tnaData.filter(r=>r.season==='SS26').forEach(r => {
+    if (!catMap[r.cat]) catMap[r.cat] = {qty:0, cnt:0};
+    catMap[r.cat].qty += (r.qty||0);
+    catMap[r.cat].cnt++;
+  });
+  const catColors = {
+    'DRESS SHIRT':'#C8A96E','SPORT SHIRT':'#0D9488','KNITS':'#8B5CF6',
+    'CHINOS':'#0EA5E9','SHACKET':'#D97706','BAGS':'#C0402A','FOOTWEAR':'#6B7280'
+  };
+  const catRows = Object.entries(catMap).sort((a,b)=>b[1].qty-a[1].qty);
+  document.getElementById('catQtyTable').innerHTML = catRows.map(([cat, d]) => {
+    const pct = (d.qty/total*100).toFixed(1);
+    const avg = Math.round(d.qty/d.cnt);
+    return `<div style="padding:12px 20px;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:12px">
+      <div style="width:3px;height:36px;background:${catColors[cat]||'#C8A96E'};border-radius:2px;flex-shrink:0"></div>
+      <div style="flex:1;min-width:0">
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--sand);letter-spacing:1px">${cat}</div>
+        <div style="font-size:9px;color:rgba(232,223,208,0.4);margin-top:2px">${d.cnt} styles · avg ${avg.toLocaleString()} units/style</div>
+        <div style="margin-top:6px;height:4px;background:rgba(255,255,255,0.06);border-radius:2px">
+          <div style="height:4px;background:${catColors[cat]||'#C8A96E'};border-radius:2px;width:${pct}%;transition:width 0.4s"></div>
+        </div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-family:var(--font-mono);font-size:14px;font-weight:600;color:var(--gold)">${d.qty.toLocaleString()}</div>
+        <div style="font-family:var(--font-mono);font-size:9px;color:rgba(200,169,110,0.5)">${pct}%</div>
+      </div>
+    </div>`;
+  }).join('') + `<div style="padding:12px 20px;background:rgba(10,22,40,0.8);border-top:1px solid var(--gold);display:flex;justify-content:space-between;align-items:center">
+    <span style="font-family:var(--font-mono);font-size:9px;color:var(--gold);letter-spacing:1.5px">TOTAL</span>
+    <span style="font-family:var(--font-mono);font-size:15px;font-weight:700;color:var(--gold)">${total.toLocaleString()}</span>
+  </div>`;
+
+  // ── Vendor table ──────────────────────
+  const vendMap = {};
+  tnaData.filter(r=>r.season==='SS26').forEach(r => {
+    if (!vendMap[r.vendor]) vendMap[r.vendor] = {qty:0, cnt:0};
+    vendMap[r.vendor].qty += (r.qty||0);
+    vendMap[r.vendor].cnt++;
+  });
+  const vendRows = Object.entries(vendMap).sort((a,b)=>b[1].qty-a[1].qty);
+  const vendColors = ['#C8A96E','#0D9488','#8B5CF6','#0EA5E9','#D97706','#C0402A'];
+  document.getElementById('vendorQtyTable').innerHTML = vendRows.map(([vend, d], i) => {
+    const pct = (d.qty/total*100).toFixed(1);
+    const avg = Math.round(d.qty/d.cnt);
+    const col = vendColors[i % vendColors.length];
+    return `<div style="padding:12px 20px;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:12px">
+      <div style="width:3px;height:36px;background:${col};border-radius:2px;flex-shrink:0"></div>
+      <div style="flex:1;min-width:0">
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--sand);letter-spacing:1px">${vend}</div>
+        <div style="font-size:9px;color:rgba(232,223,208,0.4);margin-top:2px">${d.cnt} styles · avg ${avg.toLocaleString()} units/style</div>
+        <div style="margin-top:6px;height:4px;background:rgba(255,255,255,0.06);border-radius:2px">
+          <div style="height:4px;background:${col};border-radius:2px;width:${pct}%;transition:width 0.4s"></div>
+        </div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-family:var(--font-mono);font-size:14px;font-weight:600;color:var(--gold)">${d.qty.toLocaleString()}</div>
+        <div style="font-family:var(--font-mono);font-size:9px;color:rgba(200,169,110,0.5)">${pct}%</div>
+      </div>
+    </div>`;
+  }).join('') + `<div style="padding:12px 20px;background:rgba(10,22,40,0.8);border-top:1px solid var(--gold);display:flex;justify-content:space-between;align-items:center">
+    <span style="font-family:var(--font-mono);font-size:9px;color:var(--gold);letter-spacing:1.5px">TOTAL</span>
+    <span style="font-family:var(--font-mono);font-size:15px;font-weight:700;color:var(--gold)">${total.toLocaleString()}</span>
+  </div>`;
+
+  // ── Style-wise table ──────────────────
+  const filteredTotal = data.reduce((s,r)=>s+(r.qty||0),0);
+  const sorted = [...data].sort((a,b)=>(b.qty||0)-(a.qty||0));
+  const catColorsFn = cat => catColors[cat] || '#C8A96E';
+  document.getElementById('styleQtyBody').innerHTML = sorted.map((r,i) => {
+    const qty = r.qty||0;
+    const pct = filteredTotal > 0 ? (qty/filteredTotal*100).toFixed(1) : '0.0';
+    const barW = filteredTotal > 0 ? Math.round(qty/filteredTotal*100) : 0;
+    const rowBg = i%2===0 ? 'rgba(255,255,255,0.02)' : 'transparent';
+    return `<tr style="background:${rowBg};border-bottom:1px solid rgba(255,255,255,0.04)">
+      <td style="padding:8px 16px;font-family:var(--font-mono);font-size:10px;color:var(--gold)">${r.id}</td>
+      <td style="padding:8px 16px"><span style="font-family:var(--font-mono);font-size:8px;padding:2px 7px;border:1px solid ${catColorsFn(r.cat)}44;color:${catColorsFn(r.cat)};letter-spacing:1px">${r.cat}</span></td>
+      <td style="padding:8px 16px;font-size:11px;color:var(--sand2);max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.desc}</td>
+      <td style="padding:8px 16px;font-size:10px;color:rgba(232,223,208,0.5)">${r.vendor}</td>
+      <td style="padding:8px 16px;text-align:right;font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--sand2)">${qty.toLocaleString()}</td>
+      <td style="padding:8px 16px;text-align:right;font-family:var(--font-mono);font-size:10px;color:rgba(200,169,110,0.6)">${pct}%</td>
+      <td style="padding:8px 16px;min-width:100px">
+        <div style="height:5px;background:rgba(255,255,255,0.06);border-radius:3px">
+          <div style="height:5px;background:${catColorsFn(r.cat)};border-radius:3px;width:${Math.min(barW*3,100)}%;opacity:0.8"></div>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  const shownQty = filteredTotal;
+  document.getElementById('styleQtyFooter').innerHTML =
+    `Showing ${sorted.length} styles · Total: <strong style="color:var(--gold)">${shownQty.toLocaleString()} units</strong>` +
+    (catFilter!=='ALL'||vendFilter!=='ALL' ? ` <span style="color:rgba(200,169,110,0.5)">(filtered from 95,000 total)</span>` : '');
+}
+
+// ════════════════════════════════════════════
+// IMAGE UPLOAD SYSTEM
+// ════════════════════════════════════════════
+const styleImages = {};
+let imgModalCurrentId = null;
+
+function handleImageUpload(id, input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    styleImages[id] = e.target.result;
+    applyFilters();
+    toast('Image added for ' + id);
+  };
+  reader.readAsDataURL(file);
+}
+
+function openImageModal(id, e) {
+  if (e) e.stopPropagation();
+  imgModalCurrentId = id;
+  const src = styleImages[id];
+  if (!src) return;
+  document.getElementById('imgModalImg').src = src;
+  document.getElementById('imgModalLabel').textContent = id + ' — Style Image';
+  document.getElementById('imgModal').classList.add('open');
+}
+
+function closeImageModal(e) {
+  if (e && e.target !== document.getElementById('imgModal')) return;
+  document.getElementById('imgModal').classList.remove('open');
+}
+
+function handleModalImageReplace(input) {
+  const file = input.files[0];
+  if (!file || !imgModalCurrentId) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    styleImages[imgModalCurrentId] = e.target.result;
+    document.getElementById('imgModalImg').src = e.target.result;
+    applyFilters();
+    toast('Image updated for ' + imgModalCurrentId);
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeImage() {
+  if (!imgModalCurrentId) return;
+  delete styleImages[imgModalCurrentId];
+  document.getElementById('imgModal').classList.remove('open');
+  applyFilters();
+  toast('Image removed for ' + imgModalCurrentId);
+}
+
+</script>
+</body>
+</html>
